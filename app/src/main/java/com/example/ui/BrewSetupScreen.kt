@@ -31,6 +31,7 @@ import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Remove
 import androidx.compose.material.icons.filled.Tune
 import androidx.compose.material.icons.filled.WaterDrop
+import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Timer
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -70,12 +71,29 @@ import com.example.ui.theme.StageBloomColor
 import com.example.ui.theme.StageDrawdownColor
 import com.example.ui.theme.StagePourColor
 
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.DarkMode
 import androidx.compose.material.icons.filled.LightMode
+import androidx.compose.material.icons.filled.PlayCircle
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
+import androidx.compose.material3.MenuAnchorType
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import com.example.ui.theme.PaletteCherryMaroon
 import com.example.ui.theme.PaletteIvoryWhite
 import com.example.ui.theme.PaletteSlateWaterBlue
 import com.example.ui.theme.PaletteWarmSand
+
+data class RatioItem(
+    val ratio: Float,
+    val label: String,
+    val description: String
+)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -90,6 +108,8 @@ fun BrewSetupScreen(
     onAutoBalanceWater: () -> Unit,
     onResetToAuto: () -> Unit,
     onStartBrewing: () -> Unit,
+    onNavigateToTimer: () -> Unit = onStartBrewing,
+    onOpenMethodsGuide: () -> Unit = {},
     isDarkMode: Boolean = false,
     onToggleDarkMode: () -> Unit = {},
     modifier: Modifier = Modifier
@@ -97,7 +117,30 @@ fun BrewSetupScreen(
     var editingStageIndex by remember { mutableStateOf<Int?>(null) }
 
     val quickDoses = listOf(12f, 15f, 18f, 20f, 24f, 30f)
-    val quickRatios = listOf(14f, 15f, 16f, 16.6f, 17f, 18f)
+    val ratioDropdownItems = remember {
+        listOf(
+            RatioItem(12f, "1 : 12", "Sangat Pekat & Kuat (Intense)"),
+            RatioItem(13f, "1 : 13", "Pekat & Tebal (Bold & Rich)"),
+            RatioItem(14f, "1 : 14", "Medium-Kuat (Full-bodied)"),
+            RatioItem(15f, "1 : 15", "Seimbang / Classic V60 (Rekomendasi)"),
+            RatioItem(16f, "1 : 16", "Spesialti Jernih (Clean & Sweet)"),
+            RatioItem(16.6f, "1 : 16.6", "Rasio Emas SCA (Golden Ratio)"),
+            RatioItem(17f, "1 : 17", "Ringan & Floral (Light & Bright)"),
+            RatioItem(18f, "1 : 18", "Ekstra Ringan (Delicate Tea-like)")
+        )
+    }
+
+    var doseInputText by remember {
+        mutableStateOf(if (recipe.doseGrams % 1f == 0f) recipe.doseGrams.toInt().toString() else recipe.doseGrams.toString())
+    }
+
+    // Synchronize doseInputText when external recipe changes occur (e.g. quick chips or stepper)
+    LaunchedEffect(recipe.doseGrams) {
+        val currentParsed = doseInputText.toFloatOrNull()
+        if (currentParsed != recipe.doseGrams) {
+            doseInputText = if (recipe.doseGrams % 1f == 0f) recipe.doseGrams.toInt().toString() else recipe.doseGrams.toString()
+        }
+    }
 
     LazyColumn(
         modifier = modifier
@@ -178,12 +221,31 @@ fun BrewSetupScreen(
         // Method Selector Chips
         item {
             Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                Text(
-                    text = "Pilih Metode Penyeduhan",
-                    style = MaterialTheme.typography.labelLarge,
-                    fontWeight = FontWeight.SemiBold,
-                    color = MaterialTheme.colorScheme.onSurface
-                )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "Pilih Metode Penyeduhan",
+                        style = MaterialTheme.typography.labelLarge,
+                        fontWeight = FontWeight.SemiBold,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                    FilledTonalIconButton(
+                        onClick = onOpenMethodsGuide,
+                        modifier = Modifier
+                            .size(32.dp)
+                            .testTag("button_brew_methods_info")
+                    ) {
+                        Icon(
+                            imageVector = Icons.Outlined.Info,
+                            contentDescription = "Penjelasan Metode Penyeduhan",
+                            tint = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.size(18.dp)
+                        )
+                    }
+                }
                 LazyRow(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                     contentPadding = PaddingValues(horizontal = 2.dp)
@@ -232,7 +294,7 @@ fun BrewSetupScreen(
                     modifier = Modifier.padding(16.dp),
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    // Dosis Kopi (g)
+                    // Dosis Kopi (g) - Free Text Input (Default 15g)
                     Column {
                         Row(
                             modifier = Modifier.fillMaxWidth(),
@@ -255,7 +317,7 @@ fun BrewSetupScreen(
                             }
                             Text(
                                 text = "${recipe.doseGrams} gram",
-                                style = MaterialTheme.typography.titleLarge,
+                                style = MaterialTheme.typography.titleMedium,
                                 fontWeight = FontWeight.Bold,
                                 color = MaterialTheme.colorScheme.primary
                             )
@@ -263,14 +325,56 @@ fun BrewSetupScreen(
 
                         Spacer(modifier = Modifier.height(8.dp))
 
-                        // Stepper + / -
+                        // Free text input field for dose (default 15 gram)
+                        OutlinedTextField(
+                            value = doseInputText,
+                            onValueChange = { newText ->
+                                val sanitized = newText.replace(',', '.')
+                                if (sanitized.isEmpty() || sanitized.matches(Regex("^\\d*\\.?\\d*$"))) {
+                                    doseInputText = sanitized
+                                    val parsed = sanitized.toFloatOrNull()
+                                    if (parsed != null && parsed > 0f) {
+                                        onUpdateDose(parsed)
+                                    }
+                                }
+                            },
+                            label = { Text("Ketik Dosis Kopi Bebas (Free Text)") },
+                            placeholder = { Text("15") },
+                            suffix = {
+                                Text(
+                                    "gram",
+                                    fontWeight = FontWeight.Bold,
+                                    color = MaterialTheme.colorScheme.primary
+                                )
+                            },
+                            singleLine = true,
+                            keyboardOptions = KeyboardOptions(
+                                keyboardType = KeyboardType.Decimal,
+                                imeAction = ImeAction.Done
+                            ),
+                            leadingIcon = {
+                                Icon(
+                                    imageVector = Icons.Default.Coffee,
+                                    contentDescription = null,
+                                    tint = MaterialTheme.colorScheme.primary
+                                )
+                            },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .testTag("dose_input_field"),
+                            shape = RoundedCornerShape(12.dp)
+                        )
+
+                        Spacer(modifier = Modifier.height(10.dp))
+
+                        // Stepper + / - & Quick dose chips
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.SpaceBetween,
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             FilledTonalIconButton(
-                                onClick = { onUpdateDose(recipe.doseGrams - 1f) },
+                                onClick = { onUpdateDose((recipe.doseGrams - 1f).coerceAtLeast(1f)) },
                                 modifier = Modifier.testTag("dose_minus_button")
                             ) {
                                 Icon(Icons.Default.Remove, contentDescription = "Kurang 1g")
@@ -313,7 +417,7 @@ fun BrewSetupScreen(
 
                     HorizontalDivider(color = MaterialTheme.colorScheme.outline.copy(alpha = 0.2f))
 
-                    // Rasio Penyeduhan (1:X)
+                    // Rasio Penyeduhan (Dropdown 1:12 sampai 1:18)
                     Column {
                         Row(
                             modifier = Modifier.fillMaxWidth(),
@@ -336,22 +440,101 @@ fun BrewSetupScreen(
                             }
                             Text(
                                 text = "1 : ${if (recipe.ratio % 1f == 0f) recipe.ratio.toInt() else recipe.ratio}",
-                                style = MaterialTheme.typography.titleLarge,
+                                style = MaterialTheme.typography.titleMedium,
                                 fontWeight = FontWeight.Bold,
                                 color = MaterialTheme.colorScheme.secondary
                             )
                         }
 
-                        Spacer(modifier = Modifier.height(8.dp))
+                        Spacer(modifier = Modifier.height(10.dp))
 
-                        // Stepper + / -
+                        // Ratio Dropdown Selection (1:12 sampai 1:18)
+                        var ratioDropdownExpanded by remember { mutableStateOf(false) }
+                        val currentRatioFormatted = if (recipe.ratio % 1f == 0f) "1 : ${recipe.ratio.toInt()}" else "1 : ${recipe.ratio}"
+                        val currentOption = ratioDropdownItems.find { kotlin.math.abs(it.ratio - recipe.ratio) < 0.05f }
+                        val ratioDisplayText = if (currentOption != null) {
+                            "${currentOption.label} • ${currentOption.description}"
+                        } else {
+                            currentRatioFormatted
+                        }
+
+                        ExposedDropdownMenuBox(
+                            expanded = ratioDropdownExpanded,
+                            onExpandedChange = { ratioDropdownExpanded = !ratioDropdownExpanded },
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            OutlinedTextField(
+                                value = ratioDisplayText,
+                                onValueChange = {},
+                                readOnly = true,
+                                label = { Text("Pilihan Rasio Seduh (1:12 sampai 1:18)") },
+                                trailingIcon = {
+                                    ExposedDropdownMenuDefaults.TrailingIcon(expanded = ratioDropdownExpanded)
+                                },
+                                leadingIcon = {
+                                    Icon(
+                                        imageVector = Icons.Default.WaterDrop,
+                                        contentDescription = null,
+                                        tint = MaterialTheme.colorScheme.secondary
+                                    )
+                                },
+                                modifier = Modifier
+                                    .menuAnchor(MenuAnchorType.PrimaryNotEditable)
+                                    .fillMaxWidth()
+                                    .testTag("ratio_dropdown_field"),
+                                shape = RoundedCornerShape(12.dp)
+                            )
+
+                            ExposedDropdownMenu(
+                                expanded = ratioDropdownExpanded,
+                                onDismissRequest = { ratioDropdownExpanded = false }
+                            ) {
+                                ratioDropdownItems.forEach { opt ->
+                                    val isSelected = kotlin.math.abs(opt.ratio - recipe.ratio) < 0.05f
+                                    DropdownMenuItem(
+                                        text = {
+                                            Column {
+                                                Text(
+                                                    text = opt.label,
+                                                    fontWeight = if (isSelected) FontWeight.Bold else FontWeight.SemiBold,
+                                                    color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
+                                                )
+                                                Text(
+                                                    text = opt.description,
+                                                    style = MaterialTheme.typography.bodySmall,
+                                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                                )
+                                            }
+                                        },
+                                        trailingIcon = if (isSelected) {
+                                            {
+                                                Icon(
+                                                    Icons.Default.Check,
+                                                    contentDescription = null,
+                                                    tint = MaterialTheme.colorScheme.primary
+                                                )
+                                            }
+                                        } else null,
+                                        onClick = {
+                                            onUpdateRatio(opt.ratio)
+                                            ratioDropdownExpanded = false
+                                        },
+                                        modifier = Modifier.testTag("ratio_option_${(opt.ratio * 10).toInt()}")
+                                    )
+                                }
+                            }
+                        }
+
+                        Spacer(modifier = Modifier.height(10.dp))
+
+                        // Stepper + / - & Quick ratio chips (1:12 - 1:18)
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.SpaceBetween,
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             FilledTonalIconButton(
-                                onClick = { onUpdateRatio(recipe.ratio - 1f) },
+                                onClick = { onUpdateRatio((recipe.ratio - 1f).coerceAtLeast(10f)) },
                                 modifier = Modifier.testTag("ratio_minus_button")
                             ) {
                                 Icon(Icons.Default.Remove, contentDescription = "Kurang rasio")
@@ -359,8 +542,9 @@ fun BrewSetupScreen(
 
                             // Quick ratio chips
                             Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                                quickRatios.forEach { r ->
-                                    val isSelected = recipe.ratio == r
+                                val ratioChips = listOf(12f, 13f, 14f, 15f, 16f, 17f, 18f)
+                                ratioChips.forEach { r ->
+                                    val isSelected = kotlin.math.abs(recipe.ratio - r) < 0.05f
                                     Surface(
                                         shape = RoundedCornerShape(8.dp),
                                         color = if (isSelected) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.surface,
@@ -373,8 +557,8 @@ fun BrewSetupScreen(
                                             )
                                     ) {
                                         Text(
-                                            text = "1:${if (r % 1f == 0f) r.toInt() else r}",
-                                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 6.dp),
+                                            text = "1:${r.toInt()}",
+                                            modifier = Modifier.padding(horizontal = 6.dp, vertical = 6.dp),
                                             style = MaterialTheme.typography.labelSmall,
                                             fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
                                             color = if (isSelected) Color.White else MaterialTheme.colorScheme.onSurface
@@ -384,7 +568,7 @@ fun BrewSetupScreen(
                             }
 
                             FilledTonalIconButton(
-                                onClick = { onUpdateRatio(recipe.ratio + 1f) },
+                                onClick = { onUpdateRatio((recipe.ratio + 1f).coerceAtMost(25f)) },
                                 modifier = Modifier.testTag("ratio_plus_button")
                             ) {
                                 Icon(Icons.Default.Add, contentDescription = "Tambah rasio")
@@ -467,6 +651,33 @@ fun BrewSetupScreen(
                         )
                     }
                 }
+            }
+        }
+
+        // Tombol langsung di bawah Card Hasil Kalkulasi untuk masuk ke tab timer seduh
+        item {
+            Button(
+                onClick = onNavigateToTimer,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(54.dp)
+                    .testTag("btn_go_to_timer_under_calc"),
+                shape = RoundedCornerShape(14.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.primary
+                )
+            ) {
+                Icon(
+                    imageVector = Icons.Default.PlayCircle,
+                    contentDescription = null,
+                    modifier = Modifier.size(24.dp)
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = "Masuk ke Timer Seduh (${recipe.totalWaterGrams}g Air)",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold
+                )
             }
         }
 

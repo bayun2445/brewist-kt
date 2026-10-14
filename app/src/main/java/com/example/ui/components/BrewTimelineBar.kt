@@ -123,9 +123,8 @@ fun BrewTimelineBar(
                     val weight = (stage.durationSeconds.toFloat() / totalDurationSeconds.toFloat())
                         .coerceAtLeast(0.05f)
 
-                    val isCompleted = index < currentStageIndex
-                    val isCurrent = index == currentStageIndex
-                    val isPending = index > currentStageIndex
+                    val isCompleted = totalElapsedSeconds > 0 && index < currentStageIndex
+                    val isCurrent = totalElapsedSeconds > 0 && index == currentStageIndex
 
                     val stageProgress = if (isCompleted) {
                         1f
@@ -141,43 +140,46 @@ fun BrewTimelineBar(
                         else -> StagePourColor
                     }
 
+                    val segmentBg = when {
+                        isCompleted -> baseColor
+                        isCurrent -> baseColor.copy(alpha = 0.22f)
+                        else -> baseColor.copy(alpha = 0.10f)
+                    }
+
                     Box(
                         modifier = Modifier
                             .weight(weight)
                             .fillMaxHeight()
+                            .background(segmentBg)
                             .clickable(enabled = onStageClick != null) {
                                 onStageClick?.invoke(index)
                             }
                             .border(
-                                width = if (isCurrent) 1.5.dp else 0.5.dp,
-                                color = if (isCurrent) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline.copy(alpha = 0.15f)
+                                width = if (isCurrent) 2.dp else 0.5.dp,
+                                color = if (isCurrent) baseColor else MaterialTheme.colorScheme.outline.copy(alpha = 0.25f)
                             )
                     ) {
-                        // Background fill for progress within this segment
-                        if (isCompleted) {
+                        // Top stage accent bar for clear color identity
+                        Box(
+                            modifier = Modifier
+                                .align(Alignment.TopCenter)
+                                .fillMaxWidth()
+                                .height(3.dp)
+                                .background(if (isCompleted) Color.White.copy(alpha = 0.6f) else baseColor)
+                        )
+
+                        // Bottom active progress track for currently running stage
+                        if (isCurrent) {
                             Box(
                                 modifier = Modifier
-                                    .fillMaxSize()
-                                    .background(baseColor.copy(alpha = 0.85f))
-                            )
-                        } else if (isCurrent) {
-                            // Partial fill
-                            Box(
-                                modifier = Modifier
-                                    .fillMaxHeight()
+                                    .align(Alignment.BottomStart)
                                     .fillMaxWidth(stageProgress)
-                                    .background(
-                                        Brush.horizontalGradient(
-                                            colors = listOf(
-                                                baseColor.copy(alpha = 0.7f),
-                                                baseColor.copy(alpha = 0.95f)
-                                            )
-                                        )
-                                    )
+                                    .height(4.dp)
+                                    .background(baseColor)
                             )
                         }
 
-                        // Content inside the segment
+                        // Content inside the segment with guaranteed high-contrast colors
                         Column(
                             modifier = Modifier
                                 .fillMaxSize()
@@ -198,8 +200,8 @@ fun BrewTimelineBar(
                                     text = if (stage.isBloom) "Bloom" else "#${index + 1}",
                                     style = MaterialTheme.typography.labelSmall,
                                     fontSize = 10.sp,
-                                    fontWeight = if (isCurrent) FontWeight.Bold else FontWeight.Normal,
-                                    color = if (isCurrent) Color.White else MaterialTheme.colorScheme.onSurface,
+                                    fontWeight = if (isCurrent) FontWeight.ExtraBold else FontWeight.Bold,
+                                    color = MaterialTheme.colorScheme.onSurface,
                                     maxLines = 1,
                                     overflow = TextOverflow.Ellipsis
                                 )
@@ -210,17 +212,18 @@ fun BrewTimelineBar(
                                 text = "${stage.accumulatedWaterGrams}g",
                                 style = MaterialTheme.typography.labelSmall,
                                 fontSize = 11.sp,
-                                fontWeight = FontWeight.Bold,
-                                color = if (isCompleted || isCurrent) Color.White else MaterialTheme.colorScheme.primary,
+                                fontWeight = FontWeight.ExtraBold,
+                                color = if (isCompleted) Color.White else MaterialTheme.colorScheme.primary,
                                 maxLines = 1
                             )
 
-                            // Time chip
+                            // Time duration
                             Text(
                                 text = "${stage.durationSeconds}d",
                                 style = MaterialTheme.typography.labelSmall,
                                 fontSize = 9.sp,
-                                color = if (isCompleted || isCurrent) Color.White.copy(alpha = 0.85f) else MaterialTheme.colorScheme.onSurfaceVariant,
+                                fontWeight = FontWeight.Medium,
+                                color = if (isCompleted) Color.White.copy(alpha = 0.9f) else MaterialTheme.colorScheme.onSurfaceVariant,
                                 maxLines = 1
                             )
                         }
@@ -250,8 +253,9 @@ fun BrewTimelineBar(
             Text(
                 text = "00:00 (Mulai)",
                 style = MaterialTheme.typography.bodySmall,
-                fontSize = 10.sp,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                fontSize = 11.sp,
+                fontWeight = FontWeight.SemiBold,
+                color = MaterialTheme.colorScheme.onSurface
             )
 
             // Intermediate key time
@@ -259,7 +263,8 @@ fun BrewTimelineBar(
             Text(
                 text = String.format("%02d:%02d", midTimeSec / 60, midTimeSec % 60),
                 style = MaterialTheme.typography.bodySmall,
-                fontSize = 10.sp,
+                fontSize = 11.sp,
+                fontWeight = FontWeight.Medium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
 
@@ -268,8 +273,8 @@ fun BrewTimelineBar(
             Text(
                 text = String.format("%02d:%02d (Selesai)", totalMins, totalSecs),
                 style = MaterialTheme.typography.bodySmall,
-                fontSize = 10.sp,
-                fontWeight = FontWeight.SemiBold,
+                fontSize = 11.sp,
+                fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.primary
             )
         }

@@ -16,9 +16,18 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+
+import com.example.data.FirestoreBrewRepository
+import com.example.model.BrewRecord
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.flowOf
 
 data class TimerUiState(
     val isBrewing: Boolean = false,
@@ -32,14 +41,37 @@ data class TimerUiState(
     val showSummaryDialog: Boolean = false
 )
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class BrewViewModel(application: Application) : AndroidViewModel(application) {
 
     private val db = BrewDatabase.getDatabase(application)
     private val dao = db.brewDao()
     private val notifier = BrewNotifier(application)
+    private val firestoreRepo = FirestoreBrewRepository(application)
+    private val firebaseAuth = FirebaseAuth.getInstance()
+
+    private val _currentUser = MutableStateFlow<FirebaseUser?>(firebaseAuth.currentUser)
+    val currentUser: StateFlow<FirebaseUser?> = _currentUser.asStateFlow()
+
+    private val authListener = FirebaseAuth.AuthStateListener { auth ->
+        _currentUser.value = auth.currentUser
+    }
+
+    init {
+        firebaseAuth.addAuthStateListener(authListener)
+    }
 
     val brewHistory: StateFlow<List<BrewHistoryEntity>> = dao.getAllBrews()
         .stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
+
+    val cloudBrews: StateFlow<List<BrewRecord>> = _currentUser.flatMapLatest { user ->
+        if (user != null) {
+            firestoreRepo.observeUserBrews()
+                .catch { emit(emptyList<BrewRecord>()) }
+        } else {
+            flowOf(emptyList<BrewRecord>())
+        }
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), emptyList())
 
     // Initial default recipe: Kasuya 4:6 with 15g coffee, 1:15 ratio = 225g water
     private val _recipe = MutableStateFlow(
@@ -86,7 +118,7 @@ class BrewViewModel(application: Application) : AndroidViewModel(application) {
      * Updates Dose (grams) and recalculates all stages automatically
      */
     fun updateDose(newDose: Float) {
-        val clampedDose = newDose.coerceIn(5f, 60f)
+        val clampedDose = newDose.coerceIn(1f, 100f)
         _recipe.update { current ->
             val updatedStages = BrewCalculator.generateStages(current.methodType, clampedDose, current.ratio)
             current.copy(doseGrams = clampedDose, stages = updatedStages)
@@ -401,6 +433,25 @@ class BrewViewModel(application: Application) : AndroidViewModel(application) {
                 tastingNotes = notes
             )
             dao.insertBrew(entity)
+
+            // Sync to Firestore if authenticated with Google
+            if (_currentUser.value != null) {
+                try {
+                    firestoreRepo.saveBrew(
+                        beanName = beanName,
+                        recipeName = currentRecipe.name,
+                        doseGrams = currentRecipe.doseGrams,
+                        ratio = currentRecipe.ratio,
+                        totalWaterGrams = currentRecipe.totalWaterGrams,
+                        durationSeconds = duration,
+                        rating = rating,
+                        tastingNotes = notes
+                    )
+                } catch (e: Exception) {
+                    android.util.Log.w("BrewViewModel", "Failed to sync brew to Firestore", e)
+                }
+            }
+
             dismissSummaryDialog()
         }
     }
@@ -415,5 +466,6 @@ class BrewViewModel(application: Application) : AndroidViewModel(application) {
         super.onCleared()
         timerJob?.cancel()
         notifier.release()
+        firebaseAuth.removeAuthStateListener(authListener)
     }
 }

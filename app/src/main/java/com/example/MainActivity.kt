@@ -28,11 +28,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import com.example.ui.BrewHistoryScreen
+import com.example.ui.BrewMethodsGuideScreen
 import com.example.ui.BrewSetupScreen
 import com.example.ui.BrewTimerScreen
 import com.example.ui.BrewViewModel
@@ -61,14 +63,25 @@ fun MainScreen(viewModel: BrewViewModel, isDarkMode: Boolean) {
     val brewHistory by viewModel.brewHistory.collectAsState()
 
     var selectedTab by remember { mutableIntStateOf(0) }
+    var showingMethodsGuide by remember { mutableStateOf(false) }
 
-    // If timer begins brewing, automatically switch to Timer screen
-    // or barista can switch back and forth
-    BackHandler(enabled = selectedTab != 0) {
-        selectedTab = 0
-    }
+    if (showingMethodsGuide) {
+        BrewMethodsGuideScreen(
+            currentMethod = recipe.methodType,
+            onSelectMethod = { method ->
+                viewModel.selectMethodType(method)
+                showingMethodsGuide = false
+            },
+            onBack = { showingMethodsGuide = false }
+        )
+    } else {
+        // If timer begins brewing, automatically switch to Timer screen
+        // or barista can switch back and forth
+        BackHandler(enabled = selectedTab != 0) {
+            selectedTab = 0
+        }
 
-    Scaffold(
+        Scaffold(
         modifier = Modifier.fillMaxSize(),
         bottomBar = {
             NavigationBar(modifier = Modifier.testTag("main_navigation_bar")) {
@@ -129,6 +142,12 @@ fun MainScreen(viewModel: BrewViewModel, isDarkMode: Boolean) {
                         selectedTab = 1
                         viewModel.startTimer()
                     },
+                    onNavigateToTimer = {
+                        selectedTab = 1
+                    },
+                    onOpenMethodsGuide = {
+                        showingMethodsGuide = true
+                    },
                     isDarkMode = isDarkMode,
                     onToggleDarkMode = { viewModel.toggleDarkMode() }
                 )
@@ -151,11 +170,42 @@ fun MainScreen(viewModel: BrewViewModel, isDarkMode: Boolean) {
                     onBackToSetup = { selectedTab = 0 }
                 )
 
-                2 -> BrewHistoryScreen(
-                    historyList = brewHistory,
-                    onDeleteBrew = { viewModel.deleteBrewHistory(it) }
-                )
+                2 -> {
+                    val context = androidx.compose.ui.platform.LocalContext.current
+                    val coroutineScope = androidx.compose.runtime.rememberCoroutineScope()
+                    val currentUser by viewModel.currentUser.collectAsState()
+
+                    BrewHistoryScreen(
+                        historyList = brewHistory,
+                        currentUser = currentUser,
+                        onGoogleSignIn = {
+                            com.example.util.GoogleAuthHelper.onGoogleSignInClicked(
+                                context = context,
+                                scope = coroutineScope,
+                                onAuthSuccess = {
+                                    android.widget.Toast.makeText(context, "Berhasil masuk dengan Google!", android.widget.Toast.LENGTH_SHORT).show()
+                                },
+                                onAuthError = { errorMsg ->
+                                    android.widget.Toast.makeText(context, errorMsg, android.widget.Toast.LENGTH_LONG).show()
+                                }
+                            )
+                        },
+                        onSignOut = {
+                            com.example.util.GoogleAuthHelper.signOut(
+                                context = context,
+                                scope = coroutineScope,
+                                onComplete = {
+                                    android.widget.Toast.makeText(context, "Berhasil keluar.", android.widget.Toast.LENGTH_SHORT).show()
+                                }
+                            )
+                        },
+                        onDeleteBrew = { viewModel.deleteBrewHistory(it) }
+                    )
+                }
             }
         }
     }
 }
+}
+
+
