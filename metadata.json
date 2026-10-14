@@ -1,0 +1,6 @@
+{
+  "name": "V60 Timer",
+  "description": "Smart V60 pour-over coffee timer with automatic and manual stage calculation, horizontal timeline visualization, and vibration notifications.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
