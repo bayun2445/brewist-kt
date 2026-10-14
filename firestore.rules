@@ -1,0 +1,97 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Default deny catch-all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Global reusable helpers
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    // Entity validation helpers
+    function isValidBrew(data) {
+      return data.userId is string && data.userId.size() <= 128 &&
+             data.beanName is string && data.beanName.size() >= 1 && data.beanName.size() <= 100 &&
+             data.recipeName is string && data.recipeName.size() >= 1 && data.recipeName.size() <= 100 &&
+             data.doseGrams is number && data.doseGrams >= 1 && data.doseGrams <= 200 &&
+             data.ratio is number && data.ratio >= 5 && data.ratio <= 50 &&
+             data.totalWaterGrams is number && data.totalWaterGrams >= 10 && data.totalWaterGrams <= 5000 &&
+             data.durationSeconds is number && data.durationSeconds >= 0 && data.durationSeconds <= 3600 &&
+             (!('rating' in data) || (data.rating is number && data.rating >= 1 && data.rating <= 5)) &&
+             (!('tastingNotes' in data) || (data.tastingNotes is string && data.tastingNotes.size() <= 1000));
+    }
+
+    function isValidCustomRecipe(data) {
+      return data.userId is string && data.userId.size() <= 128 &&
+             data.name is string && data.name.size() >= 1 && data.name.size() <= 100 &&
+             data.methodType is string && data.methodType.size() <= 50 &&
+             data.doseGrams is number && data.doseGrams >= 1 && data.doseGrams <= 200 &&
+             data.ratio is number && data.ratio >= 5 && data.ratio <= 50;
+    }
+
+    // User subcollections
+    match /users/{userId} {
+      allow read, write: if isSignedIn() && request.auth.uid == userId;
+
+      match /brews/{brewId} {
+        allow get, list: if isSignedIn() && request.auth.uid == userId;
+
+        allow create: if isSignedIn() &&
+                         request.auth.uid == userId &&
+                         incoming().userId == request.auth.uid &&
+                         incoming().keys().hasAll(['userId', 'beanName', 'recipeName', 'doseGrams', 'ratio', 'totalWaterGrams', 'durationSeconds', 'createdAt']) &&
+                         incoming().keys().hasOnly(['id', 'userId', 'beanName', 'recipeName', 'doseGrams', 'ratio', 'totalWaterGrams', 'durationSeconds', 'rating', 'tastingNotes', 'createdAt', 'updatedAt']) &&
+                         incoming().createdAt is timestamp &&
+                         incoming().createdAt <= request.time &&
+                         isValidBrew(incoming());
+
+        allow update: if isSignedIn() &&
+                         request.auth.uid == userId &&
+                         incoming().userId == existing().userId &&
+                         incoming().createdAt == existing().createdAt &&
+                         isValidBrew(incoming()) &&
+                         incoming().diff(existing()).affectedKeys().hasOnly(['beanName', 'recipeName', 'doseGrams', 'ratio', 'totalWaterGrams', 'durationSeconds', 'rating', 'tastingNotes', 'updatedAt']);
+
+        allow delete: if isSignedIn() && request.auth.uid == userId;
+      }
+
+      match /custom_recipes/{recipeId} {
+        allow get, list: if isSignedIn() && request.auth.uid == userId;
+
+        allow create: if isSignedIn() &&
+                         request.auth.uid == userId &&
+                         incoming().userId == request.auth.uid &&
+                         incoming().keys().hasAll(['userId', 'name', 'methodType', 'doseGrams', 'ratio', 'createdAt']) &&
+                         incoming().keys().hasOnly(['id', 'userId', 'name', 'methodType', 'doseGrams', 'ratio', 'createdAt', 'updatedAt']) &&
+                         incoming().createdAt is timestamp &&
+                         incoming().createdAt <= request.time &&
+                         isValidCustomRecipe(incoming());
+
+        allow update: if isSignedIn() &&
+                         request.auth.uid == userId &&
+                         incoming().userId == existing().userId &&
+                         incoming().createdAt == existing().createdAt &&
+                         isValidCustomRecipe(incoming()) &&
+                         incoming().diff(existing()).affectedKeys().hasOnly(['name', 'methodType', 'doseGrams', 'ratio', 'updatedAt']);
+
+        allow delete: if isSignedIn() && request.auth.uid == userId;
+      }
+    }
+  }
+}

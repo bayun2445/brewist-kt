@@ -54,6 +54,13 @@ class BrewViewModel(application: Application) : AndroidViewModel(application) {
     private val _timerState = MutableStateFlow(TimerUiState())
     val timerState: StateFlow<TimerUiState> = _timerState.asStateFlow()
 
+    private val _isDarkMode = MutableStateFlow(false)
+    val isDarkMode: StateFlow<Boolean> = _isDarkMode.asStateFlow()
+
+    fun toggleDarkMode() {
+        _isDarkMode.update { !it }
+    }
+
     private var timerJob: Job? = null
 
     companion object {

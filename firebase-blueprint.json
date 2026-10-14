@@ -1,0 +1,134 @@
+{
+  "entities": {
+    "BrewRecord": {
+      "title": "BrewRecord",
+      "description": "A coffee brew journal entry saved by the user.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Document ID."
+        },
+        "userId": {
+          "type": "string",
+          "description": "The UID of the user who owns this brew record."
+        },
+        "beanName": {
+          "type": "string",
+          "description": "Name or origin of coffee beans used."
+        },
+        "recipeName": {
+          "type": "string",
+          "description": "Name of the brew method or recipe."
+        },
+        "doseGrams": {
+          "type": "number",
+          "description": "Coffee grounds dose in grams."
+        },
+        "ratio": {
+          "type": "number",
+          "description": "Brew water ratio (e.g. 15 for 1:15)."
+        },
+        "totalWaterGrams": {
+          "type": "number",
+          "description": "Total water volume in grams."
+        },
+        "durationSeconds": {
+          "type": "number",
+          "description": "Actual brewing duration in seconds."
+        },
+        "rating": {
+          "type": "number",
+          "description": "Taste rating from 1 to 5."
+        },
+        "tastingNotes": {
+          "type": "string",
+          "description": "Tasting notes and flavor impressions."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Creation timestamp created via FieldValue.serverTimestamp()."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Update timestamp created via FieldValue.serverTimestamp()."
+        }
+      },
+      "required": [
+        "userId",
+        "beanName",
+        "recipeName",
+        "doseGrams",
+        "ratio",
+        "totalWaterGrams",
+        "durationSeconds",
+        "createdAt"
+      ]
+    },
+    "CustomRecipe": {
+      "title": "CustomRecipe",
+      "description": "A customized V60 recipe preset created by the user.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Document ID."
+        },
+        "userId": {
+          "type": "string",
+          "description": "The UID of the user who owns this recipe."
+        },
+        "name": {
+          "type": "string",
+          "description": "Custom recipe name."
+        },
+        "methodType": {
+          "type": "string",
+          "description": "Base method preset type."
+        },
+        "doseGrams": {
+          "type": "number",
+          "description": "Coffee dose in grams."
+        },
+        "ratio": {
+          "type": "number",
+          "description": "Ratio."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Creation timestamp via FieldValue.serverTimestamp()."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Update timestamp via FieldValue.serverTimestamp()."
+        }
+      },
+      "required": [
+        "userId",
+        "name",
+        "methodType",
+        "doseGrams",
+        "ratio",
+        "createdAt"
+      ]
+    }
+  },
+  "firestore": {
+    "/users/{userId}/brews/{brewId}": {
+      "schema": {
+        "$ref": "#/entities/BrewRecord"
+      },
+      "description": "User coffee brew history and journal entries."
+    },
+    "/users/{userId}/custom_recipes/{recipeId}": {
+      "schema": {
+        "$ref": "#/entities/CustomRecipe"
+      },
+      "description": "User custom recipes."
+    }
+  }
+}

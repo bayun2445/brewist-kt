@@ -13,21 +13,21 @@
                 android:endX="96"
                 android:endY="96"
                 android:type="linear">
-                <item android:offset="0.0" android:color="#3E2723" />
-                <item android:offset="0.5" android:color="#2A1810" />
-                <item android:offset="1.0" android:color="#1A0C08" />
+                <item android:offset="0.0" android:color="#78141F" />
+                <item android:offset="0.5" android:color="#64101A" />
+                <item android:offset="1.0" android:color="#4A0810" />
             </gradient>
         </aapt:attr>
     </path>
-    <!-- Subtle coffee concentric ripple circle -->
+    <!-- Subtle coffee concentric ripple circle with Sand Oat and Slate Blue tones -->
     <path
         android:pathData="M54,20 A34,34 0 1,0 54,88 A34,34 0 1,0 54,20"
         android:strokeWidth="1.5"
-        android:strokeColor="#22D7CCC8"
+        android:strokeColor="#33E5D0AC"
         android:fillColor="#00000000" />
     <path
         android:pathData="M54,12 A42,42 0 1,0 54,96 A42,42 0 1,0 54,12"
         android:strokeWidth="1"
-        android:strokeColor="#15D7CCC8"
+        android:strokeColor="#229DB6C5"
         android:fillColor="#00000000" />
 </vector>

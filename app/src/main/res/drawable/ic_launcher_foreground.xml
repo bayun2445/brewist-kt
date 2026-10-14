@@ -5,72 +5,72 @@
     android:viewportWidth="108"
     android:viewportHeight="108">
 
-    <!-- Top Dripper Rim Plate / Collar -->
+    <!-- Top Dripper Rim Plate / Collar (Ivory White) -->
     <path
-        android:fillColor="#FFFAF0"
+        android:fillColor="#FAF6EE"
         android:pathData="M32,32 h44 c1.6,0 3,1.3 3,3 v2 c0,1.6 -1.4,3 -3,3 h-44 c-1.6,0 -3,-1.4 -3,-3 v-2 c0,-1.7 1.4,-3 3,-3 z" />
 
-    <!-- V60 Cone Body (Funnel) -->
+    <!-- V60 Cone Body (Funnel - Warm Ivory) -->
     <path
-        android:fillColor="#F5EBE1"
+        android:fillColor="#F4EDE0"
         android:pathData="M35,40 L48,63 c0.8,1.4 2.2,2.2 3.8,2.2 h4.4 c1.6,0 3,-0.8 3.8,-2.2 L73,40 Z" />
 
-    <!-- Coffee Bed inside V60 -->
+    <!-- Coffee Bed inside V60 (Warm Sand Oat from swatch) -->
     <path
-        android:fillColor="#6D4C41"
+        android:fillColor="#E5D0AC"
         android:pathData="M39,43 L45,53 c0.6,1 1.6,1.5 2.8,1.5 h4.4 c1.2,0 2.2,-0.5 2.8,-1.5 L69,43 Z" />
 
-    <!-- Characteristic V60 Curved Spiral Ribs -->
+    <!-- Characteristic V60 Curved Spiral Ribs (Deep Cherry Burgundy) -->
     <path
         android:fillColor="#00000000"
-        android:strokeColor="#C5A898"
+        android:strokeColor="#78141F"
         android:strokeWidth="1.2"
         android:strokeLineCap="round"
         android:pathData="M43,44 Q49,49 46,55" />
     <path
         android:fillColor="#00000000"
-        android:strokeColor="#C5A898"
+        android:strokeColor="#78141F"
         android:strokeWidth="1.2"
         android:strokeLineCap="round"
         android:pathData="M52,43 Q54,49 53,56" />
     <path
         android:fillColor="#00000000"
-        android:strokeColor="#C5A898"
+        android:strokeColor="#78141F"
         android:strokeWidth="1.2"
         android:strokeLineCap="round"
         android:pathData="M61,44 Q58,50 59,55" />
 
     <!-- Dripper Bottom Spout -->
     <path
-        android:fillColor="#FFFAF0"
+        android:fillColor="#FAF6EE"
         android:pathData="M50.5,65.2 h7 c0.8,0 1.5,0.7 1.5,1.5 v1.5 c0,0.8 -0.7,1.5 -1.5,1.5 h-7 c-0.8,0 -1.5,-0.7 -1.5,-1.5 v-1.5 c0,-0.8 0.7,-1.5 1.5,-1.5 z" />
 
-    <!-- Dripping Coffee Droplet -->
+    <!-- Dripping Coffee / Water Droplet (Pastel Slate Blue from bottom stripe) -->
     <path
-        android:fillColor="#E6A15C"
+        android:fillColor="#9DB6C5"
         android:pathData="M54,71.5 C54,71.5 51.5,74.5 51.5,76.5 C51.5,77.9 52.6,79 54,79 C55.4,79 56.5,77.9 56.5,76.5 C56.5,74.5 54,71.5 54,71.5 Z" />
 
-    <!-- Server / Cup Rim below -->
+    <!-- Server / Cup Rim below (Ivory White) -->
     <path
-        android:fillColor="#FFFAF0"
+        android:fillColor="#FAF6EE"
         android:pathData="M41,83 h26 c1.1,0 2,0.9 2,2 c0,1.1 -0.9,2 -2,2 h-26 c-1.1,0 -2,-0.9 -2,-2 c0,-1.1 0.9,-2 2,-2 z" />
 
-    <!-- Coffee Aroma Steam wisps above -->
+    <!-- Coffee Aroma Steam wisps above (Slate Blue & Warm Oat) -->
     <path
         android:fillColor="#00000000"
-        android:strokeColor="#E6A15C"
+        android:strokeColor="#9DB6C5"
         android:strokeWidth="1.6"
         android:strokeLineCap="round"
         android:pathData="M47,28 C45,25 49,23 47,20" />
     <path
         android:fillColor="#00000000"
-        android:strokeColor="#FFA726"
+        android:strokeColor="#E5D0AC"
         android:strokeWidth="1.6"
         android:strokeLineCap="round"
         android:pathData="M54,29 C52,25 56,23 54,19" />
     <path
         android:fillColor="#00000000"
-        android:strokeColor="#E6A15C"
+        android:strokeColor="#9DB6C5"
         android:strokeWidth="1.6"
         android:strokeLineCap="round"
         android:pathData="M61,28 C59,25 63,23 61,20" />

@@ -56,8 +56,8 @@ private val LightColorScheme = lightColorScheme(
 
 @Composable
 fun MyApplicationTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
-    // We default dynamicColor to false so the warm artisan coffee aesthetic is consistently preserved
+    // Default to false (Light Mode) so the bright Scandinavian artisan palette with Warm Ivory, Oat Sand, Cherry Maroon, and Slate Blue is immediately active!
+    darkTheme: Boolean = false,
     dynamicColor: Boolean = false,
     content: @Composable () -> Unit,
 ) {

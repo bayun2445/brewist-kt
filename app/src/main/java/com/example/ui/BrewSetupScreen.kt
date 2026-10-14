@@ -70,6 +70,13 @@ import com.example.ui.theme.StageBloomColor
 import com.example.ui.theme.StageDrawdownColor
 import com.example.ui.theme.StagePourColor
 
+import androidx.compose.material.icons.filled.DarkMode
+import androidx.compose.material.icons.filled.LightMode
+import com.example.ui.theme.PaletteCherryMaroon
+import com.example.ui.theme.PaletteIvoryWhite
+import com.example.ui.theme.PaletteSlateWaterBlue
+import com.example.ui.theme.PaletteWarmSand
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BrewSetupScreen(
@@ -83,6 +90,8 @@ fun BrewSetupScreen(
     onAutoBalanceWater: () -> Unit,
     onResetToAuto: () -> Unit,
     onStartBrewing: () -> Unit,
+    isDarkMode: Boolean = false,
+    onToggleDarkMode: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     var editingStageIndex by remember { mutableStateOf<Int?>(null) }
@@ -97,36 +106,70 @@ fun BrewSetupScreen(
         contentPadding = PaddingValues(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        // App header title
+        // App header title with swatch badge & theme toggle
         item {
             Row(
                 modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Box(
-                    modifier = Modifier
-                        .size(44.dp)
-                        .clip(CircleShape)
-                        .background(MaterialTheme.colorScheme.primaryContainer),
-                    contentAlignment = Alignment.Center
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.weight(1f)
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .size(46.dp)
+                            .clip(CircleShape)
+                            .background(MaterialTheme.colorScheme.primary),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Coffee,
+                            contentDescription = null,
+                            tint = Color.White
+                        )
+                    }
+                    Spacer(modifier = Modifier.width(12.dp))
+                    Column {
+                        Text(
+                            text = "V60 Coffee Timer",
+                            style = MaterialTheme.typography.titleLarge,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.onBackground
+                        )
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.padding(top = 2.dp)
+                        ) {
+                            Text(
+                                text = "Artisan Nordic Palette",
+                                style = MaterialTheme.typography.labelSmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                            Spacer(modifier = Modifier.width(6.dp))
+                            listOf(PaletteCherryMaroon, PaletteWarmSand, PaletteIvoryWhite, PaletteSlateWaterBlue).forEach { c ->
+                                Box(
+                                    modifier = Modifier
+                                        .padding(horizontal = 2.dp)
+                                        .size(10.dp)
+                                        .clip(CircleShape)
+                                        .background(c)
+                                        .border(0.5.dp, MaterialTheme.colorScheme.outline.copy(alpha = 0.5f), CircleShape)
+                                )
+                            }
+                        }
+                    }
+                }
+
+                FilledTonalIconButton(
+                    onClick = onToggleDarkMode,
+                    modifier = Modifier.testTag("theme_toggle_button")
                 ) {
                     Icon(
-                        imageVector = Icons.Default.Coffee,
-                        contentDescription = null,
+                        imageVector = if (isDarkMode) Icons.Default.LightMode else Icons.Default.DarkMode,
+                        contentDescription = if (isDarkMode) "Mode Terang" else "Mode Gelap",
                         tint = MaterialTheme.colorScheme.primary
-                    )
-                }
-                Spacer(modifier = Modifier.width(12.dp))
-                Column {
-                    Text(
-                        text = "V60 Coffee Brew Timer",
-                        style = MaterialTheme.typography.titleLarge,
-                        fontWeight = FontWeight.Bold
-                    )
-                    Text(
-                        text = "Atur Dosis & Rasio, Visualkan Garis Waktu",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
             }
@@ -281,7 +324,7 @@ fun BrewSetupScreen(
                                 Icon(
                                     imageVector = Icons.Default.WaterDrop,
                                     contentDescription = null,
-                                    tint = MaterialTheme.colorScheme.tertiary,
+                                    tint = MaterialTheme.colorScheme.secondary,
                                     modifier = Modifier.size(20.dp)
                                 )
                                 Spacer(modifier = Modifier.width(6.dp))
@@ -295,7 +338,7 @@ fun BrewSetupScreen(
                                 text = "1 : ${if (recipe.ratio % 1f == 0f) recipe.ratio.toInt() else recipe.ratio}",
                                 style = MaterialTheme.typography.titleLarge,
                                 fontWeight = FontWeight.Bold,
-                                color = MaterialTheme.colorScheme.tertiary
+                                color = MaterialTheme.colorScheme.secondary
                             )
                         }
 
@@ -320,12 +363,12 @@ fun BrewSetupScreen(
                                     val isSelected = recipe.ratio == r
                                     Surface(
                                         shape = RoundedCornerShape(8.dp),
-                                        color = if (isSelected) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.surface,
+                                        color = if (isSelected) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.surface,
                                         modifier = Modifier
                                             .clickable { onUpdateRatio(r) }
                                             .border(
                                                 1.dp,
-                                                if (isSelected) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.outline.copy(alpha = 0.3f),
+                                                if (isSelected) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.outline.copy(alpha = 0.3f),
                                                 RoundedCornerShape(8.dp)
                                             )
                                     ) {

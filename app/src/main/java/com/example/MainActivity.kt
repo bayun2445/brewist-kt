@@ -46,15 +46,16 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            MyApplicationTheme {
-                MainScreen(viewModel = viewModel)
+            val isDarkMode by viewModel.isDarkMode.collectAsState()
+            MyApplicationTheme(darkTheme = isDarkMode) {
+                MainScreen(viewModel = viewModel, isDarkMode = isDarkMode)
             }
         }
     }
 }
 
 @Composable
-fun MainScreen(viewModel: BrewViewModel) {
+fun MainScreen(viewModel: BrewViewModel, isDarkMode: Boolean) {
     val recipe by viewModel.recipe.collectAsState()
     val timerState by viewModel.timerState.collectAsState()
     val brewHistory by viewModel.brewHistory.collectAsState()
@@ -127,7 +128,9 @@ fun MainScreen(viewModel: BrewViewModel) {
                     onStartBrewing = {
                         selectedTab = 1
                         viewModel.startTimer()
-                    }
+                    },
+                    isDarkMode = isDarkMode,
+                    onToggleDarkMode = { viewModel.toggleDarkMode() }
                 )
 
                 1 -> BrewTimerScreen(
