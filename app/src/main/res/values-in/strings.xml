@@ -1,0 +1,270 @@
+<resources>
+    <string name="app_name">V60 Timer</string>
+    <string name="app_subtitle">Artisan Nordic Palette</string>
+
+    <!-- Navigation -->
+    <string name="nav_setup">Atur Resep</string>
+    <string name="nav_timer">Timer Seduh</string>
+    <string name="nav_history">Jurnal</string>
+
+    <!-- Theme -->
+    <string name="theme_light">Mode Terang</string>
+    <string name="theme_dark">Mode Gelap</string>
+
+    <!-- Method Selector -->
+    <string name="select_brew_method">Pilih Metode Penyeduhan</string>
+    <string name="brew_methods_guide_desc">Penjelasan Metode Penyeduhan</string>
+
+    <!-- Method Names & Short Descriptions -->
+    <string name="method_kasuya_title">Metode 4:6 (Tetsu Kasuya)</string>
+    <string name="method_kasuya_desc">5 penuangan seimbang untuk atur rasa manis, keasaman, dan body.</string>
+    <string name="method_hoffmann_title">Metode James Hoffmann</string>
+    <string name="method_hoffmann_desc">Teknik pusaran (swirl) dengan penuangan konsisten.</string>
+    <string name="method_classic_title">Metode 3-Pour Klasik</string>
+    <string name="method_classic_desc">Blooming + 2 penuangan teratur, mudah dan konsisten.</string>
+    <string name="method_rao_title">Metode Rao Single Pour</string>
+    <string name="method_rao_desc">Blooming lalu 1 penuangan kontinu lambat.</string>
+    <string name="method_custom_title">Metode Kustom</string>
+    <string name="method_custom_desc">Atur bebas setiap tahapan sesuai selera Anda.</string>
+
+    <!-- Dose & Ratio -->
+    <string name="dose_title">Dosis Kopi (Coffee Grounds)</string>
+    <string name="dose_grams_format">%1$s gram</string>
+    <string name="dose_free_text_label">Ketik Dosis Kopi Bebas (Free Text)</string>
+    <string name="dose_unit">gram</string>
+    <string name="dose_minus_desc">Kurang 1g</string>
+    <string name="dose_plus_desc">Tambah 1g</string>
+
+    <string name="ratio_title">Rasio Penyeduhan (Brew Ratio)</string>
+    <string name="ratio_format">1 : %1$s</string>
+    <string name="ratio_dropdown_label">Pilihan Rasio Seduh (1:12 sampai 1:18)</string>
+    <string name="ratio_minus_desc">Kurang rasio</string>
+    <string name="ratio_plus_desc">Tambah rasio</string>
+
+    <!-- Ratio Dropdown Item Descriptions -->
+    <string name="ratio_item_12_desc">Sangat Pekat &amp; Kuat (Intense)</string>
+    <string name="ratio_item_13_desc">Pekat &amp; Tebal (Bold &amp; Rich)</string>
+    <string name="ratio_item_14_desc">Medium-Kuat (Full-bodied)</string>
+    <string name="ratio_item_15_desc">Seimbang / Classic V60 (Rekomendasi)</string>
+    <string name="ratio_item_16_desc">Spesialti Jernih (Clean &amp; Sweet)</string>
+    <string name="ratio_item_16_6_desc">Rasio Emas SCA (Golden Ratio)</string>
+    <string name="ratio_item_17_desc">Ringan &amp; Floral (Light &amp; Bright)</string>
+    <string name="ratio_item_18_desc">Ekstra Ringan (Delicate Tea-like)</string>
+
+    <!-- Summary Target Banner -->
+    <string name="total_water_label">TOTAL AIR</string>
+    <string name="total_time_label">TOTAL WAKTU</string>
+    <string name="stages_count_label">TAHAPAN</string>
+    <string name="stages_count_format">%1$d Tahap</string>
+    <string name="water_grams_format">%1$d g / ml</string>
+
+    <!-- Button under calculation card -->
+    <string name="btn_go_to_timer_under_calc">Masuk ke Timer Seduh (%1$dg Air)</string>
+
+    <!-- Stages Section -->
+    <string name="stages_section_title">Rincian Tahapan Seduh</string>
+    <string name="stages_section_subtitle">Ketuk tahap untuk mengubah durasi &amp; volume air</string>
+    <string name="auto_balance_water_desc">Ratakan Sisa Air</string>
+    <string name="reset_to_auto_desc">Reset Otomatis</string>
+    <string name="stage_pour_target_format">Tuang: +%1$dg (Target: %2$dg)</string>
+    <string name="stage_duration_format">• Durasi: %1$sd</string>
+    <string name="edit_stage_desc">Edit Tahap</string>
+    <string name="btn_add_stage">Tambah Tahapan Seduh</string>
+    <string name="btn_open_timer_start">Buka Timer &amp; Mulai Seduh</string>
+
+    <!-- Timeline Bar -->
+    <string name="timeline_header">Garis Waktu Penyeduhan (Kiri ke Kanan)</string>
+    <string name="timeline_start">00:00 (Mulai)</string>
+    <string name="timeline_finish_format">%1$s (Selesai)</string>
+    <string name="unit_seconds_short">d</string>
+    <string name="stage_done">Selesai</string>
+
+    <!-- Timer Screen -->
+    <string name="timer_recipe_summary_format">%1$sg kopi • 1:%2$d • %3$dg air</string>
+    <string name="vibration_notification_desc">Notifikasi Getar</string>
+    <string name="bell_sound_notification_desc">Suara Bell</string>
+    <string name="btn_test_vibration">Uji Getar</string>
+    <string name="remaining_stage_time_label">SISA WAKTU TAHAP INI</string>
+    <string name="total_elapsed_label">Total Waktu: </string>
+    <string name="stage_x_of_y">TAHAP %1$d DARI %2$d</string>
+    <string name="status_in_progress">● Sedang Berjalan</string>
+    <string name="status_paused">⏸ Jeda</string>
+    <string name="status_ready">Siap Mulai</string>
+    <string name="pour_water_heading">Tuang Air</string>
+    <string name="target_scale_heading">TARGET TIMBANGAN</string>
+    <string name="grams_unit">%1$d gram</string>
+    <string name="next_stage_label">Tahap Berikutnya: %1$s</string>
+    <string name="next_target_label">Target: %1$dg</string>
+    <string name="prev_stage_desc">Tahap Sebelumnya</string>
+    <string name="next_stage_desc">Tahap Selanjutnya</string>
+    <string name="btn_start_brew">Mulai Seduh</string>
+    <string name="btn_resume_brew">Lanjutkan</string>
+    <string name="btn_pause_brew">Jeda (Pause)</string>
+    <string name="btn_reset_timer">Reset Timer</string>
+    <string name="btn_change_recipe">Ubah Resep</string>
+
+    <!-- Stage Edit Dialog -->
+    <string name="dialog_edit_stage_title">Edit Tahap #%1$d</string>
+    <string name="delete_stage_desc">Hapus Tahapan</string>
+    <string name="field_stage_name">Nama Tahapan</string>
+    <string name="field_water_volume">Volume Air (gram / ml)</string>
+    <string name="field_stage_duration">Durasi Tahap (detik)</string>
+    <string name="field_barista_instruction">Instruksi Barista</string>
+    <string name="instruction_placeholder">misal: Tuang lembut melingkar dari tengah ke luar</string>
+    <string name="btn_cancel">Batal</string>
+    <string name="btn_save">Simpan</string>
+
+    <!-- Summary Dialog -->
+    <string name="dialog_summary_title">☕ Penyeduhan Selesai!</string>
+    <string name="dialog_summary_subtitle">Selamat menikmati kopi V60 Anda!</string>
+    <string name="summary_coffee_dose">Dosis Kopi</string>
+    <string name="summary_ratio">Rasio</string>
+    <string name="summary_total_water">Total Air</string>
+    <string name="summary_actual_time">Waktu Aktual</string>
+    <string name="field_bean_name">Nama Biji Kopi / Asal</string>
+    <string name="field_bean_placeholder">misal: Ethiopia Yirgacheffe Washed</string>
+    <string name="field_rating">Rating Rasa</string>
+    <string name="field_tasting_notes">Catatan Rasa &amp; Tasting Notes</string>
+    <string name="field_notes_placeholder">misal: Aroma melati, keasaman bergamot, sweetness manis madu...</string>
+    <string name="btn_save_journal">Simpan ke Jurnal</string>
+    <string name="btn_skip_without_saving">Lewati Tanpa Menyimpan</string>
+
+    <!-- Journal / History Screen -->
+    <string name="journal_screen_title">Jurnal Seduh Kopi</string>
+    <string name="cloud_sync_active_title">Cloud Sync Aktif (Dedicated Firebase)</string>
+    <string name="cloud_sync_inactive_title">Sinkronisasi Cloud Google</string>
+    <string name="btn_sign_in_google">Masuk dengan Google</string>
+    <string name="btn_sign_out">Keluar</string>
+    <string name="cloud_sync_active_desc">Catatan seduhan tersinkronisasi realtime dengan cloud Firebase.</string>
+    <string name="cloud_sync_inactive_desc">Masuk untuk mencadangkan dan menyinkronkan jurnal seduh ke seluruh perangkat Anda.</string>
+    <string name="journal_empty_title">Belum Ada Catatan Seduhan</string>
+    <string name="journal_empty_desc">Mulai seduh kopi pertamamu untuk mencatat rasa dan resep!</string>
+    <string name="label_tasting_notes">Catatan Rasa:</string>
+    <string name="btn_view_detail">Lihat Detail</string>
+    <string name="btn_use_timer_quick">Pakai Timer Ini</string>
+    <string name="delete_brew_desc">Hapus Catatan</string>
+    <string name="delete_dialog_title">Hapus Catatan Jurnal</string>
+    <string name="delete_dialog_msg">Apakah Anda yakin ingin menghapus catatan seduh \"%1$s\"?</string>
+    <string name="btn_confirm_delete">Hapus</string>
+
+    <!-- Brew Detail Dialog -->
+    <string name="detail_dialog_title">Detail Riwayat Seduh</string>
+    <string name="detail_bean_unnamed">Kopi Tanpa Nama</string>
+    <string name="detail_param_dose">Dosis</string>
+    <string name="detail_param_ratio">Rasio</string>
+    <string name="detail_param_water">Total Air</string>
+    <string name="detail_param_time">Waktu Seduh</string>
+    <string name="detail_notes_title">Catatan Rasa &amp; Tasting Notes</string>
+    <string name="detail_no_notes">Tidak ada catatan rasa.</string>
+    <string name="btn_reuse_timer">Pakai Timer &amp; Resep Ini Lagi</string>
+    <string name="btn_reuse_timer_subtitle">Terapkan resep dan dosis ini ke timer seduh aktif</string>
+    <string name="btn_close">Tutup</string>
+
+    <!-- Guide Screen -->
+    <string name="guide_screen_title">Panduan Metode Seduh V60</string>
+    <string name="guide_screen_subtitle">Panduan &amp; Karakteristik V60</string>
+    <string name="guide_back_desc">Kembali ke Atur Resep</string>
+    <string name="guide_banner_title">Pilih Metode Sesuai Karakter Beans</string>
+    <string name="guide_banner_desc">Setiap metode memiliki profil ekstraksi, teknik penuangan, dan rekomendasi ukuran gilingan yang berbeda. Pilih metode di bawah untuk langsung menerapkannya ke resep Anda.</string>
+    <string name="guide_concept_heading">Konsep Penyeduhan</string>
+    <string name="guide_technique_heading">Teknik &amp; Penuangan</string>
+    <string name="guide_recommendation_heading">Rekomendasi Karakter Kopi</string>
+    <string name="btn_select_method">Pilih Metode Ini</string>
+    <string name="badge_active_method">Metode Aktif</string>
+    <string name="guide_btn_active">Metode Ini Sedang Aktif (Kembali)</string>
+    <string name="guide_btn_use_method">Gunakan Metode %1$s</string>
+
+    <!-- Guide Method Contents (Indonesian) -->
+    <string name="guide_kasuya_title">Metode 4:6 (Tetsu Kasuya)</string>
+    <string name="guide_kasuya_subtitle">World Brewers Cup Champion 2016</string>
+    <string name="guide_kasuya_tagline">Kontrol presisi rasa manis, keasaman, dan ketebalan body kopi</string>
+    <string name="guide_kasuya_b1">5 Penuangan</string>
+    <string name="guide_kasuya_b2">Gilingan Kasar (Coarse)</string>
+    <string name="guide_kasuya_b3">Suhu 88-92°C</string>
+    <string name="guide_kasuya_b4">Rasio 1:15</string>
+    <string name="guide_kasuya_concept" formatted="false">Total air dibagi menjadi 40% dan 60%:
+• 40% Pertama (2 penuangan): Mengatur keseimbangan sweetness vs acidity. Penuangan pertama yang lebih sedikit membuat kopi terasa lebih manis.
+• 60% Kedua (3 penuangan sama rata): Mengatur kekuatan (strength) dan body kopi.</string>
+    <string name="guide_kasuya_technique">Gunakan gilingan kasar (coarse). Berikan interval waktu ~45 detik antar penuangan, biarkan air hampir surut sebelum menuang tahap berikutnya.</string>
+    <string name="guide_kasuya_recommendation">Sangat cocok untuk single origin light roast dengan citarasa fruity &amp; floral (misal: Ethiopia, Kenya, Gesha).</string>
+
+    <string name="guide_hoffmann_title">Metode James Hoffmann (The Ultimate V60)</string>
+    <string name="guide_hoffmann_subtitle">World Barista Champion 2007</string>
+    <string name="guide_hoffmann_tagline">Ekstraksi merata, clarity tinggi, dan aftertaste manis tanpa sepat</string>
+    <string name="guide_hoffmann_b1">3 Fase + Swirl</string>
+    <string name="guide_hoffmann_b2">Gilingan Medium-Fine</string>
+    <string name="guide_hoffmann_b3">Suhu 95-100°C</string>
+    <string name="guide_hoffmann_b4">Rasio 1:16.6</string>
+    <string name="guide_hoffmann_concept" formatted="false">Pendekatan ilmiah untuk ekstraksi tinggi yang konsisten:
+• Blooming Ekstensif: 2x hingga 3x dosis kopi dengan gentle swirl agar seluruh bubuk kopi basah merata.
+• Fase 1: Penuangan spiral hingga 60% total air pada menit 1:15.
+• Fase 2: Penuangan lambat hingga 100% total air pada menit 1:45.
+• Finishing Swirl: Aduk perlahan dan swirl lembut agar permukaan kopi (coffee bed) rata sempurna saat drawdown.</string>
+    <string name="guide_hoffmann_technique">Gunakan air bersuhu tinggi (95-100°C untuk light roast) agar komponen rasa manis dan asam terekstraksi maksimal.</string>
+    <string name="guide_hoffmann_recommendation">Ideal untuk kopi washed specialty berkepadatan tinggi yang membutuhkan kejernihan rasa tinggi (high clarity).</string>
+
+    <string name="guide_classic_title">Metode 3-Pour Klasik</string>
+    <string name="guide_classic_subtitle">Standar Emas Kedai Kopi Spesialti</string>
+    <string name="guide_classic_tagline">Metode paling konsisten, ramah barista, dan mudah direproduksi setiap hari</string>
+    <string name="guide_classic_b1">3 Penuangan</string>
+    <string name="guide_classic_b2">Gilingan Medium</string>
+    <string name="guide_classic_b3">Suhu 90-93°C</string>
+    <string name="guide_classic_b4">Rasio 1:15</string>
+    <string name="guide_classic_concept">Tiga penuangan ritmis yang seimbang:
+• Blooming: Penuangan 2x dosis kopi selama 45 detik untuk degassing gas CO2.
+• Penuangan Ke-2: Gerakan melingkar dari dalam ke luar untuk ekstraksi komponen rasa tengah.
+• Penuangan Ke-3: Penuangan di tengah untuk menstabilkan aliran hingga drawdown tuntas.</string>
+    <string name="guide_classic_technique">Jaga corong ceret leher angsa tetap rendah dekat permukaan air untuk menghindari cipratan dan turbulensi tak terkontrol.</string>
+    <string name="guide_classic_recommendation">Sangat serbaguna untuk semua jenis biji kopi (Natural, Honey, maupun Washed) dari level roasting light hingga medium.</string>
+
+    <string name="guide_rao_title">Metode Rao Single Pour (Scott Rao)</string>
+    <string name="guide_rao_subtitle">Konsultan Kopi &amp; Penulis Spesialis Roasting</string>
+    <string name="guide_rao_tagline">Satu penuangan kontinu untuk temperatur stabil &amp; ekstraksi homogen</string>
+    <string name="guide_rao_b1">Single Pour</string>
+    <string name="guide_rao_b2">Gilingan Medium-Fine</string>
+    <string name="guide_rao_b3">Suhu 92-95°C</string>
+    <string name="guide_rao_b4">Rasio 1:16</string>
+    <string name="guide_rao_concept">Mempertahankan suhu seduh konstan dan meminimalkan channeling:
+• Blooming &amp; Excavation: Aduk cepat dan lembut saat bloom agar tidak ada \'dry pockets\' (bubuk kopi kering di dalam corong).
+• Single Pour: Penuangan tunggal panjang secara kontinu dan teratur tanpa jeda hingga target air tercapai.
+• Rao Spin: Goyangkan dripper perlahan saat air mendekati akhir agar tidak ada partikel kopi menempel di dinding (high-and-dry).</string>
+    <string name="guide_rao_technique">Penuangan harus konstan dan tenang dari ketinggian stabil. Jangan menuang langsung ke kertas filter.</string>
+    <string name="guide_rao_recommendation">Menghasilkan ekstraksi sangat tinggi dengan mouthfeel halus (silky) dan sweetness yang mendalam.</string>
+
+    <string name="guide_custom_title">Metode Kustom (Eksperimen Pribadi)</string>
+    <string name="guide_custom_subtitle">Eksplorasi Tanpa Batas Barista</string>
+    <string name="guide_custom_tagline">Rancang tahapan seduh, rasio air, dan instruksi sesuka hati Anda</string>
+    <string name="guide_custom_b1">Multi-Tahap Bebas</string>
+    <string name="guide_custom_b2">Fleksibel</string>
+    <string name="guide_custom_b3">Auto-Balance Air</string>
+    <string name="guide_custom_b4">Simpan Resep</string>
+    <string name="guide_custom_concept" formatted="false">Kebebasan 100% untuk menciptakan resep signature Anda:
+• Tambah atau hapus tahapan seduh secara bebas.
+• Sesuaikan durasi detik, gramasi air, dan deskripsi instruksi tiap tahap.
+• Tombol \'Auto-Balance Air\' memudahkan menyelaraskan total air otomatis dengan rasio yang Anda pilih.</string>
+    <string name="guide_custom_technique">Sangat cocok untuk menguji variabel baru seperti bypass water, pulse pouring khusus, atau temperatur air bertingkat.</string>
+    <string name="guide_custom_recommendation">Terbaik untuk kopi fermentasi khusus (anaerobic, thermal shock, carbonic maceration) atau persiapan kompetisi.</string>
+
+    <!-- Toasts -->
+    <string name="toast_auth_success">Berhasil masuk dengan Google!</string>
+    <string name="toast_sign_out_success">Berhasil keluar.</string>
+    <string name="toast_recipe_applied">Resep \"%1$s\" dipilih! Timer siap digunakan.</string>
+
+    <!-- Bean Grouping & Autocomplete -->
+    <string name="bean_card_brews_count">%1$d Seduhan</string>
+    <string name="bean_card_single_brew">1 Seduhan</string>
+    <string name="bean_card_latest_brew">Terakhir: %1$s</string>
+    <string name="bean_historical_timers_title">Riwayat Timer Seduhan</string>
+    <string name="bean_dropdown_hint">Pilih dari biji kopi yang pernah disimpan</string>
+    <string name="btn_open_journal">Buka Jurnal</string>
+    <string name="btn_view_all_brews">Lihat Semua (%1$d Seduhan)</string>
+    <string name="dialog_edit_journal_title">Edit Jurnal Seduh</string>
+    <string name="dialog_edit_bean_title">Ubah Nama Biji Kopi</string>
+    <string name="field_apply_to_all_brews">Terapkan perubahan nama ke semua riwayat beans ini</string>
+    <string name="btn_save_changes">Simpan Perubahan</string>
+    <string name="btn_edit_journal">Edit Jurnal</string>
+    <string name="btn_rename_bean">Ubah Nama</string>
+    <string name="toast_journal_updated">Jurnal berhasil diperbarui!</string>
+    <string name="toast_bean_renamed">Nama beans berhasil diperbarui untuk semua riwayat!</string>
+    <string name="bean_detail_page_subtitle">Riwayat Lengkap Seduhan</string>
+</resources>

@@ -1,6 +1,7 @@
 package com.example.ui
 
 import androidx.activity.compose.BackHandler
+import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -54,25 +55,23 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.R
 import com.example.model.BrewMethodType
-import com.example.ui.theme.PaletteCherryMaroon
-import com.example.ui.theme.PaletteIvoryWhite
-import com.example.ui.theme.PaletteSlateWaterBlue
-import com.example.ui.theme.PaletteWarmSand
 
 data class MethodGuideInfo(
     val type: BrewMethodType,
-    val title: String,
-    val subtitle: String,
-    val tagline: String,
+    @StringRes val titleRes: Int,
+    @StringRes val subtitleRes: Int,
+    @StringRes val taglineRes: Int,
     val icon: ImageVector,
-    val badges: List<String>,
-    val concept: String,
-    val technique: String,
-    val recommendation: String
+    val badgesRes: List<Int>,
+    @StringRes val conceptRes: Int,
+    @StringRes val techniqueRes: Int,
+    @StringRes val recommendationRes: Int
 )
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
@@ -87,74 +86,84 @@ fun BrewMethodsGuideScreen(
 
     val methodsData = listOf(
         MethodGuideInfo(
+            type = BrewMethodType.CLASSIC_3_POUR,
+            titleRes = R.string.guide_classic_title,
+            subtitleRes = R.string.guide_classic_subtitle,
+            taglineRes = R.string.guide_classic_tagline,
+            icon = Icons.Default.Coffee,
+            badgesRes = listOf(
+                R.string.guide_classic_b1,
+                R.string.guide_classic_b2,
+                R.string.guide_classic_b3,
+                R.string.guide_classic_b4
+            ),
+            conceptRes = R.string.guide_classic_concept,
+            techniqueRes = R.string.guide_classic_technique,
+            recommendationRes = R.string.guide_classic_recommendation
+        ),
+        MethodGuideInfo(
             type = BrewMethodType.KASUYA_4_6,
-            title = "Metode 4:6 (Tetsu Kasuya)",
-            subtitle = "World Brewers Cup Champion 2016",
-            tagline = "Kontrol presisi rasa manis, keasaman, dan ketebalan body kopi",
+            titleRes = R.string.guide_kasuya_title,
+            subtitleRes = R.string.guide_kasuya_subtitle,
+            taglineRes = R.string.guide_kasuya_tagline,
             icon = Icons.Default.Star,
-            badges = listOf("5 Penuangan", "Gilingan Kasar (Coarse)", "Suhu 88-92°C", "Rasio 1:15"),
-            concept = "Total air dibagi menjadi 40% dan 60%:\n" +
-                    "• 40% Pertama (2 penuangan): Mengatur keseimbangan sweetness vs acidity. Penuangan pertama yang lebih sedikit membuat kopi terasa lebih manis.\n" +
-                    "• 60% Kedua (3 penuangan sama rata): Mengatur kekuatan (strength) dan body kopi.",
-            technique = "Gunakan gilingan kasar (coarse). Berikan interval waktu ~45 detik antar penuangan, biarkan air hampir surut sebelum menuang tahap berikutnya.",
-            recommendation = "Sangat cocok untuk single origin light roast dengan citarasa fruity & floral (misal: Ethiopia, Kenya, Gesha)."
+            badgesRes = listOf(
+                R.string.guide_kasuya_b1,
+                R.string.guide_kasuya_b2,
+                R.string.guide_kasuya_b3,
+                R.string.guide_kasuya_b4
+            ),
+            conceptRes = R.string.guide_kasuya_concept,
+            techniqueRes = R.string.guide_kasuya_technique,
+            recommendationRes = R.string.guide_kasuya_recommendation
         ),
         MethodGuideInfo(
             type = BrewMethodType.HOFFMANN_V60,
-            title = "Metode James Hoffmann (The Ultimate V60)",
-            subtitle = "World Barista Champion 2007",
-            tagline = "Ekstraksi merata, clarity tinggi, dan aftertaste manis tanpa sepat",
+            titleRes = R.string.guide_hoffmann_title,
+            subtitleRes = R.string.guide_hoffmann_subtitle,
+            taglineRes = R.string.guide_hoffmann_tagline,
             icon = Icons.Default.Science,
-            badges = listOf("3 Fase + Swirl", "Gilingan Medium-Fine", "Suhu 95-100°C", "Rasio 1:16.6"),
-            concept = "Pendekatan ilmiah untuk ekstraksi tinggi yang konsisten:\n" +
-                    "• Blooming Ekstensif: 2x hingga 3x dosis kopi dengan gentle swirl agar seluruh bubuk kopi basah merata.\n" +
-                    "• Fase 1: Penuangan spiral hingga 60% total air pada menit 1:15.\n" +
-                    "• Fase 2: Penuangan lambat hingga 100% total air pada menit 1:45.\n" +
-                    "• Finishing Swirl: Aduk perlahan dan swirl lembut agar permukaan kopi (coffee bed) rata sempurna saat drawdown.",
-            technique = "Gunakan air bersuhu tinggi (95-100°C untuk light roast) agar komponen rasa manis dan asam terekstraksi maksimal.",
-            recommendation = "Ideal untuk kopi washed specialty berkepadatan tinggi yang membutuhkan kejernihan rasa tinggi (high clarity)."
-        ),
-        MethodGuideInfo(
-            type = BrewMethodType.CLASSIC_3_POUR,
-            title = "Metode 3-Pour Klasik",
-            subtitle = "Standar Emas Kedai Kopi Spesialti",
-            tagline = "Metode paling konsisten, ramah barista, dan mudah direproduksi setiap hari",
-            icon = Icons.Default.Coffee,
-            badges = listOf("3 Penuangan", "Gilingan Medium", "Suhu 90-93°C", "Rasio 1:15"),
-            concept = "Tiga penuangan ritmis yang seimbang:\n" +
-                    "• Blooming: Penuangan 2x dosis kopi selama 45 detik untuk degassing gas CO2.\n" +
-                    "• Penuangan Ke-2: Gerakan melingkar dari dalam ke luar untuk ekstraksi komponen rasa tengah.\n" +
-                    "• Penuangan Ke-3: Penuangan di tengah untuk menstabilkan aliran hingga drawdown tuntas.",
-            technique = "Jaga corong ceret leher angsa tetap rendah dekat permukaan air untuk menghindari cipratan dan turbulensi tak terkontrol.",
-            recommendation = "Sangat serbaguna untuk semua jenis biji kopi (Natural, Honey, maupun Washed) dari level roasting light hingga medium."
+            badgesRes = listOf(
+                R.string.guide_hoffmann_b1,
+                R.string.guide_hoffmann_b2,
+                R.string.guide_hoffmann_b3,
+                R.string.guide_hoffmann_b4
+            ),
+            conceptRes = R.string.guide_hoffmann_concept,
+            techniqueRes = R.string.guide_hoffmann_technique,
+            recommendationRes = R.string.guide_hoffmann_recommendation
         ),
         MethodGuideInfo(
             type = BrewMethodType.RAO_SINGLE_POUR,
-            title = "Metode Rao Single Pour (Scott Rao)",
-            subtitle = "Konsultan Kopi & Penulis Spesialis Roasting",
-            tagline = "Satu penuangan kontinu untuk temperatur stabil & ekstraksi homogen",
+            titleRes = R.string.guide_rao_title,
+            subtitleRes = R.string.guide_rao_subtitle,
+            taglineRes = R.string.guide_rao_tagline,
             icon = Icons.Default.WaterDrop,
-            badges = listOf("Single Continuous Pour", "Gilingan Medium-Fine", "Suhu 92-95°C", "Rasio 1:16"),
-            concept = "Mempertahankan suhu seduh konstan dan meminimalkan channeling:\n" +
-                    "• Blooming & Excavation: Aduk cepat dan lembut saat bloom agar tidak ada 'dry pockets' (bubuk kopi kering di dalam corong).\n" +
-                    "• Single Pour: Penuangan tunggal panjang secara kontinu dan teratur tanpa jeda hingga target air tercapai.\n" +
-                    "• Rao Spin: Goyangkan dripper perlahan saat air mendekati akhir agar tidak ada partikel kopi menempel di dinding (high-and-dry).",
-            technique = "Penuangan harus konstan dan tenang dari ketinggian stabil. Jangan menuang langsung ke kertas filter.",
-            recommendation = "Menghasilkan ekstraksi sangat tinggi dengan mouthfeel halus (silky) dan sweetness yang mendalam."
+            badgesRes = listOf(
+                R.string.guide_rao_b1,
+                R.string.guide_rao_b2,
+                R.string.guide_rao_b3,
+                R.string.guide_rao_b4
+            ),
+            conceptRes = R.string.guide_rao_concept,
+            techniqueRes = R.string.guide_rao_technique,
+            recommendationRes = R.string.guide_rao_recommendation
         ),
         MethodGuideInfo(
             type = BrewMethodType.CUSTOM,
-            title = "Metode Kustom (Eksperimen Pribadi)",
-            subtitle = "Eksplorasi Tanpa Batas Barista",
-            tagline = "Rancang tahapan seduh, rasio air, dan instruksi sesuka hati Anda",
+            titleRes = R.string.guide_custom_title,
+            subtitleRes = R.string.guide_custom_subtitle,
+            taglineRes = R.string.guide_custom_tagline,
             icon = Icons.Default.Tune,
-            badges = listOf("Multi-Tahap Bebas", "Fleksibel", "Auto-Balance Air", "Simpan Resep"),
-            concept = "Kebebasan 100% untuk menciptakan resep signature Anda:\n" +
-                    "• Tambah atau hapus tahapan seduh secara bebas.\n" +
-                    "• Sesuaikan durasi detik, gramasi air, dan deskripsi instruksi tiap tahap.\n" +
-                    "• Tombol 'Auto-Balance Air' memudahkan menyelaraskan total air otomatis dengan rasio yang Anda pilih.",
-            technique = "Sangat cocok untuk menguji variabel baru seperti bypass water, pulse pouring khusus, atau temperatur air bertingkat.",
-            recommendation = "Terbaik untuk kopi fermentasi khusus (anaerobic, thermal shock, carbonic maceration) atau persiapan kompetisi."
+            badgesRes = listOf(
+                R.string.guide_custom_b1,
+                R.string.guide_custom_b2,
+                R.string.guide_custom_b3,
+                R.string.guide_custom_b4
+            ),
+            conceptRes = R.string.guide_custom_concept,
+            techniqueRes = R.string.guide_custom_technique,
+            recommendationRes = R.string.guide_custom_recommendation
         )
     )
 
@@ -167,12 +176,12 @@ fun BrewMethodsGuideScreen(
                 title = {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Text(
-                            text = "Penjelasan Metode Seduh",
+                            text = stringResource(R.string.guide_screen_title),
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold
                         )
                         Text(
-                            text = "Panduan & Karakteristik V60",
+                            text = stringResource(R.string.guide_screen_subtitle),
                             style = MaterialTheme.typography.labelSmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -185,7 +194,7 @@ fun BrewMethodsGuideScreen(
                     ) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Kembali ke Atur Resep"
+                            contentDescription = stringResource(R.string.guide_back_desc)
                         )
                     }
                 },
@@ -231,14 +240,14 @@ fun BrewMethodsGuideScreen(
                         Spacer(modifier = Modifier.width(14.dp))
                         Column {
                             Text(
-                                text = "Pilih Metode Sesuai Karakter Beans",
+                                text = stringResource(R.string.guide_banner_title),
                                 style = MaterialTheme.typography.titleSmall,
                                 fontWeight = FontWeight.Bold,
                                 color = MaterialTheme.colorScheme.onPrimaryContainer
                             )
                             Spacer(modifier = Modifier.height(2.dp))
                             Text(
-                                text = "Setiap metode memiliki profil ekstraksi, teknik penuangan, dan rekomendasi ukuran gilingan yang berbeda. Pilih metode di bawah untuk langsung menerapkannya ke resep Anda.",
+                                text = stringResource(R.string.guide_banner_desc),
                                 style = MaterialTheme.typography.bodySmall,
                                 color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.85f),
                                 lineHeight = 18.sp
@@ -301,14 +310,14 @@ fun BrewMethodsGuideScreen(
                             Column(modifier = Modifier.weight(1f)) {
                                 Row(verticalAlignment = Alignment.CenterVertically) {
                                     Text(
-                                        text = info.title,
+                                        text = stringResource(info.titleRes),
                                         style = MaterialTheme.typography.titleMedium,
                                         fontWeight = FontWeight.Bold,
                                         color = MaterialTheme.colorScheme.onSurface
                                     )
                                 }
                                 Text(
-                                    text = info.subtitle,
+                                    text = stringResource(info.subtitleRes),
                                     style = MaterialTheme.typography.labelMedium,
                                     fontWeight = FontWeight.Medium,
                                     color = MaterialTheme.colorScheme.primary
@@ -321,7 +330,7 @@ fun BrewMethodsGuideScreen(
                                         .clip(RoundedCornerShape(8.dp))
                                         .background(MaterialTheme.colorScheme.primary)
                                         .padding(horizontal = 8.dp, vertical = 4.dp)
-                                ) {
+                                    ) {
                                     Row(verticalAlignment = Alignment.CenterVertically) {
                                         Icon(
                                             imageVector = Icons.Default.Check,
@@ -331,7 +340,7 @@ fun BrewMethodsGuideScreen(
                                         )
                                         Spacer(modifier = Modifier.width(4.dp))
                                         Text(
-                                            text = "Aktif",
+                                            text = stringResource(R.string.badge_active_method),
                                             style = MaterialTheme.typography.labelSmall,
                                             fontWeight = FontWeight.Bold,
                                             color = Color.White
@@ -343,7 +352,7 @@ fun BrewMethodsGuideScreen(
 
                         // Tagline
                         Text(
-                            text = info.tagline,
+                            text = stringResource(info.taglineRes),
                             style = MaterialTheme.typography.bodyMedium,
                             fontWeight = FontWeight.SemiBold,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -354,12 +363,12 @@ fun BrewMethodsGuideScreen(
                             horizontalArrangement = Arrangement.spacedBy(6.dp),
                             verticalArrangement = Arrangement.spacedBy(6.dp)
                         ) {
-                            info.badges.forEach { badge ->
+                            info.badgesRes.forEach { badgeRes ->
                                 SuggestionChip(
                                     onClick = {},
                                     label = {
                                         Text(
-                                            text = badge,
+                                            text = stringResource(badgeRes),
                                             style = MaterialTheme.typography.labelSmall,
                                             fontWeight = FontWeight.Medium
                                         )
@@ -384,13 +393,13 @@ fun BrewMethodsGuideScreen(
                         // Concept section
                         Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                             Text(
-                                text = "Konsep & Prinsip Seduh",
+                                text = stringResource(R.string.guide_concept_heading),
                                 style = MaterialTheme.typography.labelLarge,
                                 fontWeight = FontWeight.Bold,
                                 color = MaterialTheme.colorScheme.primary
                             )
                             Text(
-                                text = info.concept,
+                                text = stringResource(info.conceptRes),
                                 style = MaterialTheme.typography.bodySmall,
                                 color = MaterialTheme.colorScheme.onSurface,
                                 lineHeight = 19.sp
@@ -400,13 +409,13 @@ fun BrewMethodsGuideScreen(
                         // Technique section
                         Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                             Text(
-                                text = "Teknik Penuangan",
+                                text = stringResource(R.string.guide_technique_heading),
                                 style = MaterialTheme.typography.labelLarge,
                                 fontWeight = FontWeight.Bold,
                                 color = MaterialTheme.colorScheme.primary
                             )
                             Text(
-                                text = info.technique,
+                                text = stringResource(info.techniqueRes),
                                 style = MaterialTheme.typography.bodySmall,
                                 color = MaterialTheme.colorScheme.onSurface,
                                 lineHeight = 19.sp
@@ -428,13 +437,13 @@ fun BrewMethodsGuideScreen(
                         ) {
                             Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
                                 Text(
-                                    text = "Rekomendasi Biji Kopi:",
+                                    text = stringResource(R.string.guide_recommendation_heading) + ":",
                                     style = MaterialTheme.typography.labelSmall,
                                     fontWeight = FontWeight.Bold,
                                     color = MaterialTheme.colorScheme.primary
                                 )
                                 Text(
-                                    text = info.recommendation,
+                                    text = stringResource(info.recommendationRes),
                                     style = MaterialTheme.typography.bodySmall,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                                     lineHeight = 17.sp
@@ -458,11 +467,12 @@ fun BrewMethodsGuideScreen(
                                 )
                                 Spacer(modifier = Modifier.width(8.dp))
                                 Text(
-                                    text = "Metode Ini Sedang Aktif (Kembali)",
+                                    text = stringResource(R.string.guide_btn_active),
                                     fontWeight = FontWeight.Bold
                                 )
                             }
                         } else {
+                            val methodTitle = stringResource(info.titleRes)
                             Button(
                                 onClick = {
                                     onSelectMethod(info.type)
@@ -483,7 +493,7 @@ fun BrewMethodsGuideScreen(
                                 )
                                 Spacer(modifier = Modifier.width(8.dp))
                                 Text(
-                                    text = "Gunakan Metode ${info.type.displayName}",
+                                    text = stringResource(R.string.guide_btn_use_method, methodTitle),
                                     fontWeight = FontWeight.Bold
                                 )
                             }

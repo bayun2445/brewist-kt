@@ -1,11 +1,44 @@
 package com.example.model
 
-enum class BrewMethodType(val displayName: String, val shortDesc: String) {
-    KASUYA_4_6("Metode 4:6 (Tetsu Kasuya)", "5 penuangan seimbang untuk atur rasa manis, keasaman, dan body."),
-    HOFFMANN_V60("Metode James Hoffmann", "Teknik pusaran (swirl) dengan penuangan konsisten."),
-    CLASSIC_3_POUR("Metode 3-Pour Klasik", "Blooming + 2 penuangan teratur, mudah dan konsisten."),
-    RAO_SINGLE_POUR("Metode Rao Single Pour", "Blooming lalu 1 penuangan kontinu lambat."),
-    CUSTOM("Metode Kustom", "Atur bebas setiap tahapan sesuai selera Anda.")
+import androidx.annotation.StringRes
+import com.example.R
+
+enum class BrewMethodType(
+    val displayName: String,
+    val shortDesc: String,
+    @StringRes val titleRes: Int,
+    @StringRes val descRes: Int
+) {
+    CLASSIC_3_POUR(
+        "Metode 3-Pour Klasik",
+        "Blooming + 2 penuangan teratur, mudah dan konsisten.",
+        R.string.method_classic_title,
+        R.string.method_classic_desc
+    ),
+    KASUYA_4_6(
+        "Metode 4:6 (Tetsu Kasuya)",
+        "5 penuangan seimbang untuk atur rasa manis, keasaman, dan body.",
+        R.string.method_kasuya_title,
+        R.string.method_kasuya_desc
+    ),
+    HOFFMANN_V60(
+        "Metode James Hoffmann",
+        "Teknik pusaran (swirl) dengan penuangan konsisten.",
+        R.string.method_hoffmann_title,
+        R.string.method_hoffmann_desc
+    ),
+    RAO_SINGLE_POUR(
+        "Metode Rao Single Pour",
+        "Blooming lalu 1 penuangan kontinu lambat.",
+        R.string.method_rao_title,
+        R.string.method_rao_desc
+    ),
+    CUSTOM(
+        "Metode Kustom",
+        "Atur bebas setiap tahapan sesuai selera Anda.",
+        R.string.method_custom_title,
+        R.string.method_custom_desc
+    )
 }
 
 data class BrewRecipe(

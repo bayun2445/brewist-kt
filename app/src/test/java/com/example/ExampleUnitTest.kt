@@ -52,4 +52,11 @@ class ExampleUnitTest {
         val sumWater = balanced.sumOf { it.waterGrams }
         assertEquals(240, sumWater)
     }
+
+    @Test
+    fun testHoffmannStagesGeneration() {
+        val stages = BrewCalculator.generateStages(BrewMethodType.HOFFMANN_V60, 18f, 16f)
+        assertTrue(stages.isNotEmpty())
+        assertEquals(288, stages.last().accumulatedWaterGrams)
+    }
 }

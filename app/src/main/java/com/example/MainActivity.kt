@@ -61,6 +61,7 @@ fun MainScreen(viewModel: BrewViewModel, isDarkMode: Boolean) {
     val recipe by viewModel.recipe.collectAsState()
     val timerState by viewModel.timerState.collectAsState()
     val brewHistory by viewModel.brewHistory.collectAsState()
+    val savedBeanNames by viewModel.savedBeanNames.collectAsState()
 
     var selectedTab by remember { mutableIntStateOf(0) }
     var showingMethodsGuide by remember { mutableStateOf(false) }
@@ -85,11 +86,15 @@ fun MainScreen(viewModel: BrewViewModel, isDarkMode: Boolean) {
         modifier = Modifier.fillMaxSize(),
         bottomBar = {
             NavigationBar(modifier = Modifier.testTag("main_navigation_bar")) {
+                val setupLabel = androidx.compose.ui.res.stringResource(R.string.nav_setup)
+                val timerLabel = androidx.compose.ui.res.stringResource(R.string.nav_timer)
+                val historyLabel = androidx.compose.ui.res.stringResource(R.string.nav_history)
+
                 NavigationBarItem(
                     selected = selectedTab == 0,
                     onClick = { selectedTab = 0 },
-                    icon = { Icon(Icons.Default.Tune, contentDescription = "Atur Resep") },
-                    label = { Text("Atur Resep") },
+                    icon = { Icon(Icons.Default.Tune, contentDescription = setupLabel) },
+                    label = { Text(setupLabel) },
                     modifier = Modifier.testTag("nav_item_setup")
                 )
 
@@ -101,21 +106,21 @@ fun MainScreen(viewModel: BrewViewModel, isDarkMode: Boolean) {
                             BadgedBox(
                                 badge = { Badge() }
                             ) {
-                                Icon(Icons.Default.PlayCircle, contentDescription = "Timer Seduh")
+                                Icon(Icons.Default.PlayCircle, contentDescription = timerLabel)
                             }
                         } else {
-                            Icon(Icons.Default.PlayCircle, contentDescription = "Timer Seduh")
+                            Icon(Icons.Default.PlayCircle, contentDescription = timerLabel)
                         }
                     },
-                    label = { Text("Timer Seduh") },
+                    label = { Text(timerLabel) },
                     modifier = Modifier.testTag("nav_item_timer")
                 )
 
                 NavigationBarItem(
                     selected = selectedTab == 2,
                     onClick = { selectedTab = 2 },
-                    icon = { Icon(Icons.Default.History, contentDescription = "Jurnal") },
-                    label = { Text("Jurnal") },
+                    icon = { Icon(Icons.Default.History, contentDescription = historyLabel) },
+                    label = { Text(historyLabel) },
                     modifier = Modifier.testTag("nav_item_history")
                 )
             }
@@ -167,7 +172,8 @@ fun MainScreen(viewModel: BrewViewModel, isDarkMode: Boolean) {
                         viewModel.saveBrewHistory(beanName, rating, notes)
                     },
                     onDismissSummary = { viewModel.dismissSummaryDialog() },
-                    onBackToSetup = { selectedTab = 0 }
+                    onBackToSetup = { selectedTab = 0 },
+                    savedBeanNames = savedBeanNames
                 )
 
                 2 -> {
@@ -178,12 +184,13 @@ fun MainScreen(viewModel: BrewViewModel, isDarkMode: Boolean) {
                     BrewHistoryScreen(
                         historyList = brewHistory,
                         currentUser = currentUser,
+                        savedBeanNames = savedBeanNames,
                         onGoogleSignIn = {
                             com.example.util.GoogleAuthHelper.onGoogleSignInClicked(
                                 context = context,
                                 scope = coroutineScope,
                                 onAuthSuccess = {
-                                    android.widget.Toast.makeText(context, "Berhasil masuk dengan Google!", android.widget.Toast.LENGTH_SHORT).show()
+                                    android.widget.Toast.makeText(context, context.getString(R.string.toast_auth_success), android.widget.Toast.LENGTH_SHORT).show()
                                 },
                                 onAuthError = { errorMsg ->
                                     android.widget.Toast.makeText(context, errorMsg, android.widget.Toast.LENGTH_LONG).show()
@@ -195,11 +202,36 @@ fun MainScreen(viewModel: BrewViewModel, isDarkMode: Boolean) {
                                 context = context,
                                 scope = coroutineScope,
                                 onComplete = {
-                                    android.widget.Toast.makeText(context, "Berhasil keluar.", android.widget.Toast.LENGTH_SHORT).show()
+                                    android.widget.Toast.makeText(context, context.getString(R.string.toast_sign_out_success), android.widget.Toast.LENGTH_SHORT).show()
                                 }
                             )
                         },
-                        onDeleteBrew = { viewModel.deleteBrewHistory(it) }
+                        onDeleteBrew = { viewModel.deleteBrewHistory(it) },
+                        onUpdateJournal = { brew, newBean, rating, notes, applyToAll ->
+                            viewModel.updateBrewJournal(brew, newBean, rating, notes, applyToAll)
+                            android.widget.Toast.makeText(
+                                context,
+                                context.getString(R.string.toast_journal_updated),
+                                android.widget.Toast.LENGTH_SHORT
+                            ).show()
+                        },
+                        onRenameBean = { oldName, newName ->
+                            viewModel.renameBean(oldName, newName)
+                            android.widget.Toast.makeText(
+                                context,
+                                context.getString(R.string.toast_bean_renamed),
+                                android.widget.Toast.LENGTH_SHORT
+                            ).show()
+                        },
+                        onUseRecipe = { entity ->
+                            viewModel.applyRecipeFromHistory(entity)
+                            selectedTab = 1
+                            android.widget.Toast.makeText(
+                                context,
+                                context.getString(R.string.toast_recipe_applied, entity.recipeName),
+                                android.widget.Toast.LENGTH_SHORT
+                            ).show()
+                        }
                     )
                 }
             }

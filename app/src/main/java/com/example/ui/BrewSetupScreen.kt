@@ -92,7 +92,7 @@ import com.example.ui.theme.PaletteWarmSand
 data class RatioItem(
     val ratio: Float,
     val label: String,
-    val description: String
+    @androidx.annotation.StringRes val descRes: Int
 )
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -119,14 +119,14 @@ fun BrewSetupScreen(
     val quickDoses = listOf(12f, 15f, 18f, 20f, 24f, 30f)
     val ratioDropdownItems = remember {
         listOf(
-            RatioItem(12f, "1 : 12", "Sangat Pekat & Kuat (Intense)"),
-            RatioItem(13f, "1 : 13", "Pekat & Tebal (Bold & Rich)"),
-            RatioItem(14f, "1 : 14", "Medium-Kuat (Full-bodied)"),
-            RatioItem(15f, "1 : 15", "Seimbang / Classic V60 (Rekomendasi)"),
-            RatioItem(16f, "1 : 16", "Spesialti Jernih (Clean & Sweet)"),
-            RatioItem(16.6f, "1 : 16.6", "Rasio Emas SCA (Golden Ratio)"),
-            RatioItem(17f, "1 : 17", "Ringan & Floral (Light & Bright)"),
-            RatioItem(18f, "1 : 18", "Ekstra Ringan (Delicate Tea-like)")
+            RatioItem(12f, "1 : 12", com.example.R.string.ratio_item_12_desc),
+            RatioItem(13f, "1 : 13", com.example.R.string.ratio_item_13_desc),
+            RatioItem(14f, "1 : 14", com.example.R.string.ratio_item_14_desc),
+            RatioItem(15f, "1 : 15", com.example.R.string.ratio_item_15_desc),
+            RatioItem(16f, "1 : 16", com.example.R.string.ratio_item_16_desc),
+            RatioItem(16.6f, "1 : 16.6", com.example.R.string.ratio_item_16_6_desc),
+            RatioItem(17f, "1 : 17", com.example.R.string.ratio_item_17_desc),
+            RatioItem(18f, "1 : 18", com.example.R.string.ratio_item_18_desc)
         )
     }
 
@@ -176,7 +176,7 @@ fun BrewSetupScreen(
                     Spacer(modifier = Modifier.width(12.dp))
                     Column {
                         Text(
-                            text = "V60 Coffee Timer",
+                            text = androidx.compose.ui.res.stringResource(com.example.R.string.app_name),
                             style = MaterialTheme.typography.titleLarge,
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.onBackground
@@ -186,7 +186,7 @@ fun BrewSetupScreen(
                             modifier = Modifier.padding(top = 2.dp)
                         ) {
                             Text(
-                                text = "Artisan Nordic Palette",
+                                text = androidx.compose.ui.res.stringResource(com.example.R.string.app_subtitle),
                                 style = MaterialTheme.typography.labelSmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
@@ -211,7 +211,7 @@ fun BrewSetupScreen(
                 ) {
                     Icon(
                         imageVector = if (isDarkMode) Icons.Default.LightMode else Icons.Default.DarkMode,
-                        contentDescription = if (isDarkMode) "Mode Terang" else "Mode Gelap",
+                        contentDescription = if (isDarkMode) androidx.compose.ui.res.stringResource(com.example.R.string.theme_light) else androidx.compose.ui.res.stringResource(com.example.R.string.theme_dark),
                         tint = MaterialTheme.colorScheme.primary
                     )
                 }
@@ -227,7 +227,7 @@ fun BrewSetupScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "Pilih Metode Penyeduhan",
+                        text = androidx.compose.ui.res.stringResource(com.example.R.string.select_brew_method),
                         style = MaterialTheme.typography.labelLarge,
                         fontWeight = FontWeight.SemiBold,
                         color = MaterialTheme.colorScheme.onSurface
@@ -240,7 +240,7 @@ fun BrewSetupScreen(
                     ) {
                         Icon(
                             imageVector = Icons.Outlined.Info,
-                            contentDescription = "Penjelasan Metode Penyeduhan",
+                            contentDescription = androidx.compose.ui.res.stringResource(com.example.R.string.brew_methods_guide_desc),
                             tint = MaterialTheme.colorScheme.primary,
                             modifier = Modifier.size(18.dp)
                         )
@@ -257,7 +257,7 @@ fun BrewSetupScreen(
                             onClick = { onSelectMethod(method) },
                             label = {
                                 Text(
-                                    text = method.displayName,
+                                    text = androidx.compose.ui.res.stringResource(method.titleRes),
                                     fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal
                                 )
                             },
@@ -310,13 +310,13 @@ fun BrewSetupScreen(
                                 )
                                 Spacer(modifier = Modifier.width(6.dp))
                                 Text(
-                                    text = "Dosis Kopi (Coffee Grounds)",
+                                    text = androidx.compose.ui.res.stringResource(com.example.R.string.dose_title),
                                     style = MaterialTheme.typography.titleMedium,
                                     fontWeight = FontWeight.SemiBold
                                 )
                             }
                             Text(
-                                text = "${recipe.doseGrams} gram",
+                                text = androidx.compose.ui.res.stringResource(com.example.R.string.dose_grams_format, recipe.doseGrams.toString()),
                                 style = MaterialTheme.typography.titleMedium,
                                 fontWeight = FontWeight.Bold,
                                 color = MaterialTheme.colorScheme.primary
@@ -338,11 +338,11 @@ fun BrewSetupScreen(
                                     }
                                 }
                             },
-                            label = { Text("Ketik Dosis Kopi Bebas (Free Text)") },
+                            label = { Text(androidx.compose.ui.res.stringResource(com.example.R.string.dose_free_text_label)) },
                             placeholder = { Text("15") },
                             suffix = {
                                 Text(
-                                    "gram",
+                                    androidx.compose.ui.res.stringResource(com.example.R.string.dose_unit),
                                     fontWeight = FontWeight.Bold,
                                     color = MaterialTheme.colorScheme.primary
                                 )
@@ -377,7 +377,10 @@ fun BrewSetupScreen(
                                 onClick = { onUpdateDose((recipe.doseGrams - 1f).coerceAtLeast(1f)) },
                                 modifier = Modifier.testTag("dose_minus_button")
                             ) {
-                                Icon(Icons.Default.Remove, contentDescription = "Kurang 1g")
+                                Icon(
+                                    Icons.Default.Remove,
+                                    contentDescription = androidx.compose.ui.res.stringResource(com.example.R.string.dose_minus_desc)
+                                )
                             }
 
                             // Quick dose chips
@@ -410,7 +413,10 @@ fun BrewSetupScreen(
                                 onClick = { onUpdateDose(recipe.doseGrams + 1f) },
                                 modifier = Modifier.testTag("dose_plus_button")
                             ) {
-                                Icon(Icons.Default.Add, contentDescription = "Tambah 1g")
+                                Icon(
+                                    Icons.Default.Add,
+                                    contentDescription = androidx.compose.ui.res.stringResource(com.example.R.string.dose_plus_desc)
+                                )
                             }
                         }
                     }
@@ -433,13 +439,16 @@ fun BrewSetupScreen(
                                 )
                                 Spacer(modifier = Modifier.width(6.dp))
                                 Text(
-                                    text = "Rasio Penyeduhan (Brew Ratio)",
+                                    text = androidx.compose.ui.res.stringResource(com.example.R.string.ratio_title),
                                     style = MaterialTheme.typography.titleMedium,
                                     fontWeight = FontWeight.SemiBold
                                 )
                             }
                             Text(
-                                text = "1 : ${if (recipe.ratio % 1f == 0f) recipe.ratio.toInt() else recipe.ratio}",
+                                text = androidx.compose.ui.res.stringResource(
+                                    com.example.R.string.ratio_format,
+                                    if (recipe.ratio % 1f == 0f) recipe.ratio.toInt().toString() else recipe.ratio.toString()
+                                ),
                                 style = MaterialTheme.typography.titleMedium,
                                 fontWeight = FontWeight.Bold,
                                 color = MaterialTheme.colorScheme.secondary
@@ -450,10 +459,13 @@ fun BrewSetupScreen(
 
                         // Ratio Dropdown Selection (1:12 sampai 1:18)
                         var ratioDropdownExpanded by remember { mutableStateOf(false) }
-                        val currentRatioFormatted = if (recipe.ratio % 1f == 0f) "1 : ${recipe.ratio.toInt()}" else "1 : ${recipe.ratio}"
+                        val currentRatioFormatted = androidx.compose.ui.res.stringResource(
+                            com.example.R.string.ratio_format,
+                            if (recipe.ratio % 1f == 0f) recipe.ratio.toInt().toString() else recipe.ratio.toString()
+                        )
                         val currentOption = ratioDropdownItems.find { kotlin.math.abs(it.ratio - recipe.ratio) < 0.05f }
                         val ratioDisplayText = if (currentOption != null) {
-                            "${currentOption.label} • ${currentOption.description}"
+                            "${currentOption.label} • ${androidx.compose.ui.res.stringResource(currentOption.descRes)}"
                         } else {
                             currentRatioFormatted
                         }
@@ -467,7 +479,7 @@ fun BrewSetupScreen(
                                 value = ratioDisplayText,
                                 onValueChange = {},
                                 readOnly = true,
-                                label = { Text("Pilihan Rasio Seduh (1:12 sampai 1:18)") },
+                                label = { Text(androidx.compose.ui.res.stringResource(com.example.R.string.ratio_dropdown_label)) },
                                 trailingIcon = {
                                     ExposedDropdownMenuDefaults.TrailingIcon(expanded = ratioDropdownExpanded)
                                 },
@@ -500,7 +512,7 @@ fun BrewSetupScreen(
                                                     color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
                                                 )
                                                 Text(
-                                                    text = opt.description,
+                                                    text = androidx.compose.ui.res.stringResource(opt.descRes),
                                                     style = MaterialTheme.typography.bodySmall,
                                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                                 )
@@ -537,7 +549,10 @@ fun BrewSetupScreen(
                                 onClick = { onUpdateRatio((recipe.ratio - 1f).coerceAtLeast(10f)) },
                                 modifier = Modifier.testTag("ratio_minus_button")
                             ) {
-                                Icon(Icons.Default.Remove, contentDescription = "Kurang rasio")
+                                Icon(
+                                    Icons.Default.Remove,
+                                    contentDescription = androidx.compose.ui.res.stringResource(com.example.R.string.ratio_minus_desc)
+                                )
                             }
 
                             // Quick ratio chips
@@ -571,7 +586,10 @@ fun BrewSetupScreen(
                                 onClick = { onUpdateRatio((recipe.ratio + 1f).coerceAtMost(25f)) },
                                 modifier = Modifier.testTag("ratio_plus_button")
                             ) {
-                                Icon(Icons.Default.Add, contentDescription = "Tambah rasio")
+                                Icon(
+                                    Icons.Default.Add,
+                                    contentDescription = androidx.compose.ui.res.stringResource(com.example.R.string.ratio_plus_desc)
+                                )
                             }
                         }
                     }
@@ -597,12 +615,12 @@ fun BrewSetupScreen(
                 ) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Text(
-                            text = "TOTAL AIR",
+                            text = androidx.compose.ui.res.stringResource(com.example.R.string.total_water_label),
                             style = MaterialTheme.typography.labelSmall,
                             color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.8f)
                         )
                         Text(
-                            text = "${recipe.totalWaterGrams} g / ml",
+                            text = androidx.compose.ui.res.stringResource(com.example.R.string.water_grams_format, recipe.totalWaterGrams),
                             style = MaterialTheme.typography.headlineSmall,
                             fontWeight = FontWeight.ExtraBold,
                             color = MaterialTheme.colorScheme.onPrimaryContainer
@@ -618,7 +636,7 @@ fun BrewSetupScreen(
 
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Text(
-                            text = "TOTAL WAKTU",
+                            text = androidx.compose.ui.res.stringResource(com.example.R.string.total_time_label),
                             style = MaterialTheme.typography.labelSmall,
                             color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.8f)
                         )
@@ -639,12 +657,12 @@ fun BrewSetupScreen(
 
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Text(
-                            text = "TAHAPAN",
+                            text = androidx.compose.ui.res.stringResource(com.example.R.string.stages_count_label),
                             style = MaterialTheme.typography.labelSmall,
                             color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.8f)
                         )
                         Text(
-                            text = "${recipe.stages.size} Tahap",
+                            text = androidx.compose.ui.res.stringResource(com.example.R.string.stages_count_format, recipe.stages.size),
                             style = MaterialTheme.typography.headlineSmall,
                             fontWeight = FontWeight.ExtraBold,
                             color = MaterialTheme.colorScheme.onPrimaryContainer
@@ -674,7 +692,7 @@ fun BrewSetupScreen(
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = "Masuk ke Timer Seduh (${recipe.totalWaterGrams}g Air)",
+                    text = androidx.compose.ui.res.stringResource(com.example.R.string.btn_go_to_timer_under_calc, recipe.totalWaterGrams),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold
                 )
@@ -712,12 +730,12 @@ fun BrewSetupScreen(
             ) {
                 Column {
                     Text(
-                        text = "Rincian Tahapan Seduh",
+                        text = androidx.compose.ui.res.stringResource(com.example.R.string.stages_section_title),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold
                     )
                     Text(
-                        text = "Ketuk tahap untuk mengubah durasi & volume air",
+                        text = androidx.compose.ui.res.stringResource(com.example.R.string.stages_section_subtitle),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -730,7 +748,7 @@ fun BrewSetupScreen(
                     ) {
                         Icon(
                             imageVector = Icons.Default.Tune,
-                            contentDescription = "Ratakan Sisa Air",
+                            contentDescription = androidx.compose.ui.res.stringResource(com.example.R.string.auto_balance_water_desc),
                             tint = MaterialTheme.colorScheme.primary
                         )
                     }
@@ -740,7 +758,7 @@ fun BrewSetupScreen(
                     ) {
                         Icon(
                             imageVector = Icons.Default.Refresh,
-                            contentDescription = "Reset Otomatis"
+                            contentDescription = androidx.compose.ui.res.stringResource(com.example.R.string.reset_to_auto_desc)
                         )
                     }
                 }
@@ -817,13 +835,20 @@ fun BrewSetupScreen(
                                 horizontalArrangement = Arrangement.spacedBy(8.dp)
                             ) {
                                 Text(
-                                    text = "Tuang: +${stage.waterGrams}g (Target: ${stage.accumulatedWaterGrams}g)",
+                                    text = androidx.compose.ui.res.stringResource(
+                                        com.example.R.string.stage_pour_target_format,
+                                        stage.waterGrams,
+                                        stage.accumulatedWaterGrams
+                                    ),
                                     style = MaterialTheme.typography.labelSmall,
                                     color = MaterialTheme.colorScheme.primary,
                                     fontWeight = FontWeight.SemiBold
                                 )
                                 Text(
-                                    text = "• Durasi: ${stage.durationSeconds}s",
+                                    text = androidx.compose.ui.res.stringResource(
+                                        com.example.R.string.stage_duration_format,
+                                        stage.durationSeconds
+                                    ),
                                     style = MaterialTheme.typography.labelSmall,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
@@ -837,7 +862,7 @@ fun BrewSetupScreen(
                     ) {
                         Icon(
                             imageVector = Icons.Default.Edit,
-                            contentDescription = "Edit Tahap",
+                            contentDescription = androidx.compose.ui.res.stringResource(com.example.R.string.edit_stage_desc),
                             tint = MaterialTheme.colorScheme.primary
                         )
                     }
@@ -856,7 +881,7 @@ fun BrewSetupScreen(
             ) {
                 Icon(Icons.Default.Add, contentDescription = null)
                 Spacer(modifier = Modifier.width(8.dp))
-                Text("Tambah Tahapan Seduh")
+                Text(androidx.compose.ui.res.stringResource(com.example.R.string.btn_add_stage))
             }
         }
 
@@ -877,7 +902,7 @@ fun BrewSetupScreen(
                 Icon(Icons.Default.PlayArrow, contentDescription = null, modifier = Modifier.size(24.dp))
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = "Buka Timer & Mulai Seduh",
+                    text = androidx.compose.ui.res.stringResource(com.example.R.string.btn_open_timer_start),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold
                 )

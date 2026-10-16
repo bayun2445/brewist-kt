@@ -1,3 +1,270 @@
 <resources>
     <string name="app_name">V60 Timer</string>
+    <string name="app_subtitle">Artisan Nordic Palette</string>
+
+    <!-- Navigation -->
+    <string name="nav_setup">Recipe Setup</string>
+    <string name="nav_timer">Brew Timer</string>
+    <string name="nav_history">Journal</string>
+
+    <!-- Theme -->
+    <string name="theme_light">Light Mode</string>
+    <string name="theme_dark">Dark Mode</string>
+
+    <!-- Method Selector -->
+    <string name="select_brew_method">Select Brewing Method</string>
+    <string name="brew_methods_guide_desc">Brewing Methods Guide</string>
+
+    <!-- Method Names & Short Descriptions -->
+    <string name="method_kasuya_title">4:6 Method (Tetsu Kasuya)</string>
+    <string name="method_kasuya_desc">5 balanced pours to adjust sweetness, acidity, and body.</string>
+    <string name="method_hoffmann_title">James Hoffmann Method</string>
+    <string name="method_hoffmann_desc">Gentle swirl technique with consistent, uniform pouring.</string>
+    <string name="method_classic_title">Classic 3-Pour Method</string>
+    <string name="method_classic_desc">Bloom + 2 steady pours, consistent and barista-friendly.</string>
+    <string name="method_rao_title">Rao Single Pour Method</string>
+    <string name="method_rao_desc">Bloom followed by a slow, continuous single pour.</string>
+    <string name="method_custom_title">Custom Method</string>
+    <string name="method_custom_desc">Fully customize every stage to match your own taste.</string>
+
+    <!-- Dose & Ratio -->
+    <string name="dose_title">Coffee Grounds Dose</string>
+    <string name="dose_grams_format">%1$s grams</string>
+    <string name="dose_free_text_label">Enter Coffee Dose (Free Text)</string>
+    <string name="dose_unit">gram</string>
+    <string name="dose_minus_desc">Decrease 1g</string>
+    <string name="dose_plus_desc">Increase 1g</string>
+
+    <string name="ratio_title">Brewing Ratio (Coffee : Water)</string>
+    <string name="ratio_format">1 : %1$s</string>
+    <string name="ratio_dropdown_label">Brew Ratio Options (1:12 to 1:18)</string>
+    <string name="ratio_minus_desc">Decrease ratio</string>
+    <string name="ratio_plus_desc">Increase ratio</string>
+
+    <!-- Ratio Dropdown Item Descriptions -->
+    <string name="ratio_item_12_desc">Very Strong &amp; Intense</string>
+    <string name="ratio_item_13_desc">Bold &amp; Rich</string>
+    <string name="ratio_item_14_desc">Medium-Strong (Full-bodied)</string>
+    <string name="ratio_item_15_desc">Balanced / Classic V60 (Recommended)</string>
+    <string name="ratio_item_16_desc">Specialty Clean &amp; Sweet</string>
+    <string name="ratio_item_16_6_desc">SCA Golden Ratio</string>
+    <string name="ratio_item_17_desc">Light &amp; Floral</string>
+    <string name="ratio_item_18_desc">Delicate &amp; Tea-like</string>
+
+    <!-- Summary Target Banner -->
+    <string name="total_water_label">TOTAL WATER</string>
+    <string name="total_time_label">TOTAL TIME</string>
+    <string name="stages_count_label">STAGES</string>
+    <string name="stages_count_format">%1$d Stages</string>
+    <string name="water_grams_format">%1$d g / ml</string>
+
+    <!-- Button under calculation card -->
+    <string name="btn_go_to_timer_under_calc">Go to Brew Timer (%1$dg Water)</string>
+
+    <!-- Stages Section -->
+    <string name="stages_section_title">Brewing Stage Details</string>
+    <string name="stages_section_subtitle">Tap a stage to modify duration and water amount</string>
+    <string name="auto_balance_water_desc">Auto Balance Water</string>
+    <string name="reset_to_auto_desc">Reset to Default Stages</string>
+    <string name="stage_pour_target_format">Pour: +%1$dg (Target: %2$dg)</string>
+    <string name="stage_duration_format">• Duration: %1$ds</string>
+    <string name="edit_stage_desc">Edit Stage</string>
+    <string name="btn_add_stage">Add Brewing Stage</string>
+    <string name="btn_open_timer_start">Open Timer &amp; Start Brewing</string>
+
+    <!-- Timeline Bar -->
+    <string name="timeline_header">Brewing Timeline (Left to Right)</string>
+    <string name="timeline_start">00:00 (Start)</string>
+    <string name="timeline_finish_format">%1$s (Finish)</string>
+    <string name="unit_seconds_short">s</string>
+    <string name="stage_done">Done</string>
+
+    <!-- Timer Screen -->
+    <string name="timer_recipe_summary_format">%1$sg coffee • 1:%2$d • %3$dg water</string>
+    <string name="vibration_notification_desc">Vibration Notification</string>
+    <string name="bell_sound_notification_desc">Bell Sound Notification</string>
+    <string name="btn_test_vibration">Test Haptic</string>
+    <string name="remaining_stage_time_label">REMAINING STAGE TIME</string>
+    <string name="total_elapsed_label">Total Time: </string>
+    <string name="stage_x_of_y">STAGE %1$d OF %2$d</string>
+    <string name="status_in_progress">● In Progress</string>
+    <string name="status_paused">⏸ Paused</string>
+    <string name="status_ready">Ready to Start</string>
+    <string name="pour_water_heading">Pour Water</string>
+    <string name="target_scale_heading">SCALE TARGET</string>
+    <string name="grams_unit">%1$d grams</string>
+    <string name="next_stage_label">Next Stage: %1$s</string>
+    <string name="next_target_label">Target: %1$dg</string>
+    <string name="prev_stage_desc">Previous Stage</string>
+    <string name="next_stage_desc">Next Stage</string>
+    <string name="btn_start_brew">Start Brewing</string>
+    <string name="btn_resume_brew">Resume</string>
+    <string name="btn_pause_brew">Pause</string>
+    <string name="btn_reset_timer">Reset Timer</string>
+    <string name="btn_change_recipe">Change Recipe</string>
+
+    <!-- Stage Edit Dialog -->
+    <string name="dialog_edit_stage_title">Edit Stage #%1$d</string>
+    <string name="delete_stage_desc">Delete Stage</string>
+    <string name="field_stage_name">Stage Name</string>
+    <string name="field_water_volume">Water Volume (grams / ml)</string>
+    <string name="field_stage_duration">Stage Duration (seconds)</string>
+    <string name="field_barista_instruction">Barista Instruction</string>
+    <string name="instruction_placeholder">e.g., Pour gently in spirals from center out</string>
+    <string name="btn_cancel">Cancel</string>
+    <string name="btn_save">Save</string>
+
+    <!-- Summary Dialog -->
+    <string name="dialog_summary_title">☕ Brewing Finished!</string>
+    <string name="dialog_summary_subtitle">Enjoy your cup of freshly brewed V60 coffee!</string>
+    <string name="summary_coffee_dose">Coffee Dose</string>
+    <string name="summary_ratio">Ratio</string>
+    <string name="summary_total_water">Total Water</string>
+    <string name="summary_actual_time">Actual Time</string>
+    <string name="field_bean_name">Coffee Bean Name / Origin</string>
+    <string name="field_bean_placeholder">e.g., Ethiopia Yirgacheffe Washed</string>
+    <string name="field_rating">Taste Rating</string>
+    <string name="field_tasting_notes">Tasting Notes &amp; Flavors</string>
+    <string name="field_notes_placeholder">e.g., Jasmine aroma, bergamot acidity, honey sweetness...</string>
+    <string name="btn_save_journal">Save to Journal</string>
+    <string name="btn_skip_without_saving">Skip Without Saving</string>
+
+    <!-- Journal / History Screen -->
+    <string name="journal_screen_title">Coffee Brew Journal</string>
+    <string name="cloud_sync_active_title">Cloud Sync Active (Dedicated Firebase)</string>
+    <string name="cloud_sync_inactive_title">Google Cloud Sync</string>
+    <string name="btn_sign_in_google">Sign in with Google</string>
+    <string name="btn_sign_out">Sign Out</string>
+    <string name="cloud_sync_active_desc">Brew entries are synced in realtime with Firebase Cloud.</string>
+    <string name="cloud_sync_inactive_desc">Sign in with Google to backup &amp; sync your brew journal across devices.</string>
+    <string name="journal_empty_title">No Brew Records Yet</string>
+    <string name="journal_empty_desc">Start your first coffee brew to log your tasting notes and recipes!</string>
+    <string name="label_tasting_notes">Tasting Notes:</string>
+    <string name="btn_view_detail">View Detail</string>
+    <string name="btn_use_timer_quick">Use This Timer</string>
+    <string name="delete_brew_desc">Delete Record</string>
+    <string name="delete_dialog_title">Delete Brew Record</string>
+    <string name="delete_dialog_msg">Are you sure you want to delete the brew record for \"%1$s\"?</string>
+    <string name="btn_confirm_delete">Delete</string>
+
+    <!-- Brew Detail Dialog -->
+    <string name="detail_dialog_title">Brew History Detail</string>
+    <string name="detail_bean_unnamed">Unnamed Coffee</string>
+    <string name="detail_param_dose">Dose</string>
+    <string name="detail_param_ratio">Ratio</string>
+    <string name="detail_param_water">Total Water</string>
+    <string name="detail_param_time">Brew Time</string>
+    <string name="detail_notes_title">Tasting Notes &amp; Flavors</string>
+    <string name="detail_no_notes">No tasting notes recorded for this brew.</string>
+    <string name="btn_reuse_timer">Reuse This Timer &amp; Recipe</string>
+    <string name="btn_reuse_timer_subtitle">Apply this recipe, dose, and ratio to active brew timer</string>
+    <string name="btn_close">Close</string>
+
+    <!-- Guide Screen -->
+    <string name="guide_screen_title">V60 Brewing Methods Guide</string>
+    <string name="guide_screen_subtitle">V60 Guide &amp; Characteristics</string>
+    <string name="guide_back_desc">Back to Recipe Setup</string>
+    <string name="guide_banner_title">Select Method Matching Bean Character</string>
+    <string name="guide_banner_desc">Each method features a unique extraction profile, pouring technique, and recommended grind size. Choose a method below to apply it directly to your recipe.</string>
+    <string name="guide_concept_heading">Brewing Concept</string>
+    <string name="guide_technique_heading">Technique &amp; Pouring</string>
+    <string name="guide_recommendation_heading">Bean Recommendation</string>
+    <string name="btn_select_method">Select This Method</string>
+    <string name="badge_active_method">Active Method</string>
+    <string name="guide_btn_active">This Method is Active (Return)</string>
+    <string name="guide_btn_use_method">Use %1$s Method</string>
+
+    <!-- Guide Method Contents (English) -->
+    <string name="guide_kasuya_title">4:6 Method (Tetsu Kasuya)</string>
+    <string name="guide_kasuya_subtitle">World Brewers Cup Champion 2016</string>
+    <string name="guide_kasuya_tagline">Precise control over sweetness, acidity, and body strength</string>
+    <string name="guide_kasuya_b1">5 Pours</string>
+    <string name="guide_kasuya_b2">Coarse Grind</string>
+    <string name="guide_kasuya_b3">88-92°C Temp</string>
+    <string name="guide_kasuya_b4">1:15 Ratio</string>
+    <string name="guide_kasuya_concept" formatted="false">Total water is divided into 40% and 60%:
+• First 40% (2 pours): Controls sweetness vs acidity balance. A smaller first pour enhances sweetness.
+• Second 60% (3 equal pours): Controls coffee strength and body.</string>
+    <string name="guide_kasuya_technique">Use a coarse grind. Allow ~45-second intervals between pours, letting the water almost completely draw down before the next pour.</string>
+    <string name="guide_kasuya_recommendation">Best suited for fruity &amp; floral single origin light roasts (e.g., Ethiopia, Kenya, Gesha).</string>
+
+    <string name="guide_hoffmann_title">James Hoffmann Method (Ultimate V60)</string>
+    <string name="guide_hoffmann_subtitle">World Barista Champion 2007</string>
+    <string name="guide_hoffmann_tagline">Even extraction, high clarity, and sweet aftertaste without astringency</string>
+    <string name="guide_hoffmann_b1">3 Phases + Swirl</string>
+    <string name="guide_hoffmann_b2">Medium-Fine Grind</string>
+    <string name="guide_hoffmann_b3">95-100°C Temp</string>
+    <string name="guide_hoffmann_b4">1:16.6 Ratio</string>
+    <string name="guide_hoffmann_concept" formatted="false">A scientific approach for consistently high extraction:
+• Extensive Bloom: 2x to 3x coffee dose with gentle swirl to saturate all grounds.
+• Phase 1: Spiral pour reaching 60% total water by 1:15.
+• Phase 2: Gentle pour reaching 100% total water by 1:45.
+• Finishing Swirl: Gentle stir and swirl for a perfectly flat coffee bed during drawdown.</string>
+    <string name="guide_hoffmann_technique">Use high-temperature water (95-100°C for light roasts) to maximize extraction of sweet and acidic aromatics.</string>
+    <string name="guide_hoffmann_recommendation">Ideal for high-density washed specialty coffees that thrive on high clarity.</string>
+
+    <string name="guide_classic_title">Classic 3-Pour Method</string>
+    <string name="guide_classic_subtitle">Gold Standard of Specialty Coffee Cafes</string>
+    <string name="guide_classic_tagline">Most consistent, barista-friendly, and easy to reproduce every day</string>
+    <string name="guide_classic_b1">3 Pours</string>
+    <string name="guide_classic_b2">Medium Grind</string>
+    <string name="guide_classic_b3">90-93°C Temp</string>
+    <string name="guide_classic_b4">1:15 Ratio</string>
+    <string name="guide_classic_concept">Three rhythmic, balanced pours:
+• Bloom: 2x-3x coffee dose for 45 seconds to degas CO2.
+• 2nd Pour: Circular spiral from center outward for middle extraction flavors.
+• 3rd Pour: Steady center pour to maintain flow until complete drawdown.</string>
+    <string name="guide_classic_technique">Keep gooseneck kettle spout low near water surface to avoid splashing and uncontrolled agitation.</string>
+    <string name="guide_classic_recommendation">Highly versatile for all processing methods (Natural, Honey, Washed) from light to medium roasts.</string>
+
+    <string name="guide_rao_title">Rao Single Pour Method (Scott Rao)</string>
+    <string name="guide_rao_subtitle">Coffee Consultant &amp; Roasting Specialist Author</string>
+    <string name="guide_rao_tagline">One continuous pour for thermal stability &amp; homogeneous extraction</string>
+    <string name="guide_rao_b1">Single Pour</string>
+    <string name="guide_rao_b2">Medium-Fine Grind</string>
+    <string name="guide_rao_b3">92-95°C Temp</string>
+    <string name="guide_rao_b4">1:16 Ratio</string>
+    <string name="guide_rao_concept">Maintains constant slurry temperature and minimizes channeling:
+• Bloom &amp; Excavation: Quick, gentle stir during bloom to eliminate dry pockets.
+• Single Pour: Long, continuous, steady stream with zero pauses until target water is reached.
+• Rao Spin: Swirl dripper gently near the end so coffee particles do not stick to the filter walls.</string>
+    <string name="guide_rao_technique">Pour continuously from a consistent height. Avoid pouring directly against the paper filter walls.</string>
+    <string name="guide_rao_recommendation">Delivers high extraction with a remarkably silky mouthfeel and deep sweetness.</string>
+
+    <string name="guide_custom_title">Custom Method (Personal Experimentation)</string>
+    <string name="guide_custom_subtitle">Limitless Barista Exploration</string>
+    <string name="guide_custom_tagline">Design your own pouring stages, water ratios, and instructions</string>
+    <string name="guide_custom_b1">Multi-Stage Freedom</string>
+    <string name="guide_custom_b2">Flexible</string>
+    <string name="guide_custom_b3">Auto-Balance Water</string>
+    <string name="guide_custom_b4">Recipe Memory</string>
+    <string name="guide_custom_concept" formatted="false">100% freedom to create your signature recipe:
+• Freely add or remove pouring stages.
+• Customize duration seconds, water grams, and stage instructions.
+• \'Auto Balance Water\' button automatically balances remaining water to match your chosen ratio.</string>
+    <string name="guide_custom_technique">Great for testing new variables such as bypass water, pulse pouring, or tiered water temperatures.</string>
+    <string name="guide_custom_recommendation">Best for specialized fermentations (anaerobic, thermal shock, carbonic maceration) or competition routines.</string>
+
+    <!-- Toasts -->
+    <string name="toast_auth_success">Successfully signed in with Google!</string>
+    <string name="toast_sign_out_success">Successfully signed out.</string>
+    <string name="toast_recipe_applied">Recipe \"%1$s\" selected! Timer ready to brew.</string>
+
+    <!-- Bean Grouping & Autocomplete -->
+    <string name="bean_card_brews_count">%1$d Brews</string>
+    <string name="bean_card_single_brew">1 Brew</string>
+    <string name="bean_card_latest_brew">Latest: %1$s</string>
+    <string name="bean_historical_timers_title">Historical Brew Timers</string>
+    <string name="bean_dropdown_hint">Select previously saved coffee bean</string>
+    <string name="btn_open_journal">Open Journal</string>
+    <string name="btn_view_all_brews">View All %1$d Brews</string>
+    <string name="dialog_edit_journal_title">Edit Brew Journal</string>
+    <string name="dialog_edit_bean_title">Rename Coffee Bean</string>
+    <string name="field_apply_to_all_brews">Apply name change to all brews of this bean</string>
+    <string name="btn_save_changes">Save Changes</string>
+    <string name="btn_edit_journal">Edit Journal</string>
+    <string name="btn_rename_bean">Rename</string>
+    <string name="toast_journal_updated">Journal updated successfully!</string>
+    <string name="toast_bean_renamed">Bean name updated across all brews!</string>
+    <string name="bean_detail_page_subtitle">Full Brew History</string>
 </resources>

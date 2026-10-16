@@ -80,7 +80,7 @@ fun BrewTimelineBar(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = "Garis Waktu Penyeduhan (Kiri ke Kanan)",
+                text = androidx.compose.ui.res.stringResource(com.example.R.string.timeline_header),
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 fontWeight = FontWeight.SemiBold
@@ -191,7 +191,7 @@ fun BrewTimelineBar(
                             if (isCompleted) {
                                 Icon(
                                     imageVector = Icons.Default.Check,
-                                    contentDescription = "Selesai",
+                                    contentDescription = androidx.compose.ui.res.stringResource(com.example.R.string.stage_done),
                                     tint = Color.White,
                                     modifier = Modifier.size(14.dp)
                                 )
@@ -218,8 +218,9 @@ fun BrewTimelineBar(
                             )
 
                             // Time duration
+                            val secUnit = androidx.compose.ui.res.stringResource(com.example.R.string.unit_seconds_short)
                             Text(
-                                text = "${stage.durationSeconds}d",
+                                text = "${stage.durationSeconds}$secUnit",
                                 style = MaterialTheme.typography.labelSmall,
                                 fontSize = 9.sp,
                                 fontWeight = FontWeight.Medium,
@@ -251,7 +252,7 @@ fun BrewTimelineBar(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
-                text = "00:00 (Mulai)",
+                text = androidx.compose.ui.res.stringResource(com.example.R.string.timeline_start),
                 style = MaterialTheme.typography.bodySmall,
                 fontSize = 11.sp,
                 fontWeight = FontWeight.SemiBold,
@@ -270,8 +271,9 @@ fun BrewTimelineBar(
 
             val totalMins = totalDurationSeconds / 60
             val totalSecs = totalDurationSeconds % 60
+            val formattedFinishTime = String.format("%02d:%02d", totalMins, totalSecs)
             Text(
-                text = String.format("%02d:%02d (Selesai)", totalMins, totalSecs),
+                text = androidx.compose.ui.res.stringResource(com.example.R.string.timeline_finish_format, formattedFinishTime),
                 style = MaterialTheme.typography.bodySmall,
                 fontSize = 11.sp,
                 fontWeight = FontWeight.Bold,

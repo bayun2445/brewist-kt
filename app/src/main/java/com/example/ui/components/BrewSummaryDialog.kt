@@ -9,14 +9,20 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Coffee
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.StarBorder
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -31,21 +37,34 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.R
 import com.example.model.BrewRecipe
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BrewSummaryDialog(
     recipe: BrewRecipe,
     actualDurationSeconds: Int,
     onDismiss: () -> Unit,
-    onSaveHistory: (beanName: String, rating: Int, notes: String) -> Unit
+    onSaveHistory: (beanName: String, rating: Int, notes: String) -> Unit,
+    savedBeanNames: List<String> = emptyList()
 ) {
     var beanName by remember { mutableStateOf("") }
+    var dropdownExpanded by remember { mutableStateOf(false) }
     var rating by remember { mutableStateOf(5) }
     var tastingNotes by remember { mutableStateOf("") }
+
+    val filteredBeanSuggestions = remember(beanName, savedBeanNames) {
+        if (beanName.isBlank()) {
+            savedBeanNames
+        } else {
+            savedBeanNames.filter { it.contains(beanName, ignoreCase = true) }
+        }
+    }
 
     val formattedActualTime = remember(actualDurationSeconds) {
         val mins = actualDurationSeconds / 60
@@ -58,13 +77,13 @@ fun BrewSummaryDialog(
         title = {
             Column {
                 Text(
-                    text = "☕ Penyeduhan Selesai!",
+                    text = stringResource(R.string.dialog_summary_title),
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.primary
                 )
                 Text(
-                    text = "Selamat menikmati kopi V60 Anda!",
+                    text = stringResource(R.string.dialog_summary_subtitle),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -92,38 +111,92 @@ fun BrewSummaryDialog(
                         horizontalArrangement = Arrangement.SpaceAround
                     ) {
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            Text("Dosis Kopi", style = MaterialTheme.typography.labelSmall)
+                            Text(stringResource(R.string.summary_coffee_dose), style = MaterialTheme.typography.labelSmall)
                             Text("${recipe.doseGrams}g", fontWeight = FontWeight.Bold)
                         }
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            Text("Rasio", style = MaterialTheme.typography.labelSmall)
+                            Text(stringResource(R.string.summary_ratio), style = MaterialTheme.typography.labelSmall)
                             Text("1:${recipe.ratio.toInt()}", fontWeight = FontWeight.Bold)
                         }
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            Text("Total Air", style = MaterialTheme.typography.labelSmall)
+                            Text(stringResource(R.string.summary_total_water), style = MaterialTheme.typography.labelSmall)
                             Text("${recipe.totalWaterGrams}g", fontWeight = FontWeight.Bold)
                         }
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            Text("Waktu", style = MaterialTheme.typography.labelSmall)
+                            Text(stringResource(R.string.summary_actual_time), style = MaterialTheme.typography.labelSmall)
                             Text(formattedActualTime, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
                         }
                     }
                 }
 
-                // Origin / Bean Name
-                OutlinedTextField(
-                    value = beanName,
-                    onValueChange = { beanName = it },
-                    label = { Text("Nama Biji Kopi / Asal") },
-                    placeholder = { Text("Contoh: Gayo Washed, Ethiopia Yirgacheffe") },
-                    singleLine = true,
-                    modifier = Modifier.fillMaxWidth().testTag("bean_name_input")
-                )
+                // Origin / Bean Name with autocomplete dropdown
+                ExposedDropdownMenuBox(
+                    expanded = dropdownExpanded && filteredBeanSuggestions.isNotEmpty(),
+                    onExpandedChange = { dropdownExpanded = it },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    OutlinedTextField(
+                        value = beanName,
+                        onValueChange = {
+                            beanName = it
+                            dropdownExpanded = true
+                        },
+                        label = { Text(stringResource(R.string.field_bean_name)) },
+                        placeholder = { Text(stringResource(R.string.field_bean_placeholder)) },
+                        trailingIcon = {
+                            if (savedBeanNames.isNotEmpty()) {
+                                ExposedDropdownMenuDefaults.TrailingIcon(expanded = dropdownExpanded)
+                            }
+                        },
+                        singleLine = true,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .menuAnchor()
+                            .testTag("bean_name_input")
+                    )
+
+                    if (filteredBeanSuggestions.isNotEmpty()) {
+                        ExposedDropdownMenu(
+                            expanded = dropdownExpanded,
+                            onDismissRequest = { dropdownExpanded = false },
+                            modifier = Modifier.testTag("bean_name_dropdown_menu")
+                        ) {
+                            filteredBeanSuggestions.forEach { suggestion ->
+                                DropdownMenuItem(
+                                    text = {
+                                        Row(
+                                            verticalAlignment = Alignment.CenterVertically,
+                                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                                        ) {
+                                            Icon(
+                                                imageVector = Icons.Default.Coffee,
+                                                contentDescription = null,
+                                                tint = MaterialTheme.colorScheme.primary,
+                                                modifier = Modifier.size(16.dp)
+                                            )
+                                            Text(
+                                                text = suggestion,
+                                                style = MaterialTheme.typography.bodyMedium,
+                                                fontWeight = FontWeight.Medium
+                                            )
+                                        }
+                                    },
+                                    onClick = {
+                                        beanName = suggestion
+                                        dropdownExpanded = false
+                                    },
+                                    contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
+                                    modifier = Modifier.testTag("bean_suggestion_${suggestion.lowercase().replace(" ", "_")}")
+                                )
+                            }
+                        }
+                    }
+                }
 
                 // Star Rating
                 Column {
                     Text(
-                        text = "Penilaian Rasa (Rating)",
+                        text = stringResource(R.string.field_rating),
                         style = MaterialTheme.typography.labelMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -135,23 +208,24 @@ fun BrewSummaryDialog(
                         for (i in 1..5) {
                             Icon(
                                 imageVector = if (i <= rating) Icons.Default.Star else Icons.Outlined.StarBorder,
-                                contentDescription = "$i Bintang",
+                                contentDescription = "$i Stars",
                                 tint = if (i <= rating) Color(0xFFFFB300) else MaterialTheme.colorScheme.outline,
                                 modifier = Modifier
                                     .size(36.dp)
-                                    .padding(horizontal = 2.dp)
                                     .clickable { rating = i }
+                                    .padding(2.dp)
+                                    .testTag("star_rating_$i")
                             )
                         }
                     }
                 }
 
-                // Tasting Notes
+                // Tasting Notes / Flavors
                 OutlinedTextField(
                     value = tastingNotes,
                     onValueChange = { tastingNotes = it },
-                    label = { Text("Catatan Rasa (Tasting Notes)") },
-                    placeholder = { Text("Contoh: Floral, keasaman jeruk cerah, rasa manis karamel...") },
+                    label = { Text(stringResource(R.string.field_tasting_notes)) },
+                    placeholder = { Text(stringResource(R.string.field_notes_placeholder)) },
                     maxLines = 3,
                     modifier = Modifier.fillMaxWidth().testTag("tasting_notes_input")
                 )
@@ -160,19 +234,20 @@ fun BrewSummaryDialog(
         confirmButton = {
             Button(
                 onClick = {
-                    onSaveHistory(beanName.ifBlank { "Kopi V60" }, rating, tastingNotes)
+                    onSaveHistory(beanName.trim(), rating, tastingNotes.trim())
+                    onDismiss()
                 },
-                modifier = Modifier.testTag("save_history_button")
+                modifier = Modifier.testTag("save_journal_button")
             ) {
-                Text("Simpan ke Jurnal")
+                Text(stringResource(R.string.btn_save_journal))
             }
         },
         dismissButton = {
             TextButton(
                 onClick = onDismiss,
-                modifier = Modifier.testTag("close_summary_button")
+                modifier = Modifier.testTag("skip_save_button")
             ) {
-                Text("Tutup Saja")
+                Text(stringResource(R.string.btn_skip_without_saving))
             }
         }
     )

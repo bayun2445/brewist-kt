@@ -61,7 +61,7 @@ fun StageEditDialog(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "Edit Tahap #${stageIndex + 1}",
+                    text = androidx.compose.ui.res.stringResource(com.example.R.string.dialog_edit_stage_title, stageIndex + 1),
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Bold
                 )
@@ -72,7 +72,7 @@ fun StageEditDialog(
                     ) {
                         Icon(
                             imageVector = Icons.Default.Delete,
-                            contentDescription = "Hapus Tahapan",
+                            contentDescription = androidx.compose.ui.res.stringResource(com.example.R.string.delete_stage_desc),
                             tint = MaterialTheme.colorScheme.error
                         )
                     }
@@ -90,7 +90,7 @@ fun StageEditDialog(
                 OutlinedTextField(
                     value = name,
                     onValueChange = { name = it },
-                    label = { Text("Nama Tahapan") },
+                    label = { Text(androidx.compose.ui.res.stringResource(com.example.R.string.field_stage_name)) },
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth().testTag("stage_name_input")
                 )
@@ -98,7 +98,7 @@ fun StageEditDialog(
                 // Volume Air (g / ml)
                 Column(modifier = Modifier.fillMaxWidth()) {
                     Text(
-                        text = "Volume Air Penuangan",
+                        text = androidx.compose.ui.res.stringResource(com.example.R.string.field_water_volume),
                         style = MaterialTheme.typography.labelMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -112,7 +112,7 @@ fun StageEditDialog(
                             onClick = { waterGrams = (waterGrams - 5).coerceAtLeast(0) },
                             modifier = Modifier.testTag("water_minus_button")
                         ) {
-                            Icon(Icons.Default.Remove, contentDescription = "Kurang 5g")
+                            Icon(Icons.Default.Remove, contentDescription = "-5g")
                         }
 
                         Row(verticalAlignment = Alignment.CenterVertically) {
@@ -134,7 +134,7 @@ fun StageEditDialog(
                             onClick = { waterGrams += 5 },
                             modifier = Modifier.testTag("water_plus_button")
                         ) {
-                            Icon(Icons.Default.Add, contentDescription = "Tambah 5g")
+                            Icon(Icons.Default.Add, contentDescription = "+5g")
                         }
                     }
                 }
@@ -142,7 +142,7 @@ fun StageEditDialog(
                 // Durasi Waktu (detik)
                 Column(modifier = Modifier.fillMaxWidth()) {
                     Text(
-                        text = "Durasi Waktu Tahapan",
+                        text = androidx.compose.ui.res.stringResource(com.example.R.string.field_stage_duration),
                         style = MaterialTheme.typography.labelMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -156,11 +156,12 @@ fun StageEditDialog(
                             onClick = { durationSeconds = (durationSeconds - 5).coerceAtLeast(10) },
                             modifier = Modifier.testTag("duration_minus_button")
                         ) {
-                            Icon(Icons.Default.Remove, contentDescription = "Kurang 5 detik")
+                            Icon(Icons.Default.Remove, contentDescription = "-5s")
                         }
 
+                        val secUnit = androidx.compose.ui.res.stringResource(com.example.R.string.unit_seconds_short)
                         Text(
-                            text = "${durationSeconds} detik (${String.format("%02d:%02d", durationSeconds / 60, durationSeconds % 60)})",
+                            text = "${durationSeconds}$secUnit (${String.format("%02d:%02d", durationSeconds / 60, durationSeconds % 60)})",
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.onSurface
@@ -170,7 +171,7 @@ fun StageEditDialog(
                             onClick = { durationSeconds += 5 },
                             modifier = Modifier.testTag("duration_plus_button")
                         ) {
-                            Icon(Icons.Default.Add, contentDescription = "Tambah 5 detik")
+                            Icon(Icons.Default.Add, contentDescription = "+5s")
                         }
                     }
                 }
@@ -179,8 +180,8 @@ fun StageEditDialog(
                 OutlinedTextField(
                     value = instruction,
                     onValueChange = { instruction = it },
-                    label = { Text("Petunjuk / Tips Barista") },
-                    placeholder = { Text("Contoh: Tuang perlahan spiral dari tengah...") },
+                    label = { Text(androidx.compose.ui.res.stringResource(com.example.R.string.field_barista_instruction)) },
+                    placeholder = { Text(androidx.compose.ui.res.stringResource(com.example.R.string.instruction_placeholder)) },
                     maxLines = 2,
                     modifier = Modifier.fillMaxWidth().testTag("stage_instruction_input")
                 )
@@ -191,7 +192,7 @@ fun StageEditDialog(
                 onClick = {
                     onSave(
                         stage.copy(
-                            name = name.ifBlank { "Tahap #${stageIndex + 1}" },
+                            name = name.ifBlank { "Stage #${stageIndex + 1}" },
                             waterGrams = waterGrams,
                             durationSeconds = durationSeconds,
                             instruction = instruction
@@ -200,7 +201,7 @@ fun StageEditDialog(
                 },
                 modifier = Modifier.testTag("save_stage_button")
             ) {
-                Text("Simpan Perubahan")
+                Text(androidx.compose.ui.res.stringResource(com.example.R.string.btn_save))
             }
         },
         dismissButton = {
@@ -208,7 +209,7 @@ fun StageEditDialog(
                 onClick = onDismiss,
                 modifier = Modifier.testTag("cancel_stage_button")
             ) {
-                Text("Batal")
+                Text(androidx.compose.ui.res.stringResource(com.example.R.string.btn_cancel))
             }
         }
     )

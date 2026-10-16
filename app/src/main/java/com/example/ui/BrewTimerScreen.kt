@@ -81,6 +81,7 @@ fun BrewTimerScreen(
     onSaveHistory: (String, Int, String) -> Unit,
     onDismissSummary: () -> Unit,
     onBackToSetup: () -> Unit,
+    savedBeanNames: List<String> = emptyList(),
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
@@ -146,7 +147,12 @@ fun BrewTimerScreen(
                     color = MaterialTheme.colorScheme.primary
                 )
                 Text(
-                    text = "${recipe.doseGrams}g kopi • 1:${recipe.ratio.toInt()} • ${recipe.totalWaterGrams}g air",
+                    text = androidx.compose.ui.res.stringResource(
+                        com.example.R.string.timer_recipe_summary_format,
+                        recipe.doseGrams.toString(),
+                        recipe.ratio.toInt(),
+                        recipe.totalWaterGrams
+                    ),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -161,7 +167,7 @@ fun BrewTimerScreen(
                 ) {
                     Icon(
                         imageVector = if (timerState.vibrationEnabled) Icons.Default.Vibration else Icons.Default.NotificationsOff,
-                        contentDescription = "Notifikasi Getar",
+                        contentDescription = androidx.compose.ui.res.stringResource(com.example.R.string.vibration_notification_desc),
                         tint = if (timerState.vibrationEnabled) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline
                     )
                 }
@@ -173,7 +179,7 @@ fun BrewTimerScreen(
                 ) {
                     Icon(
                         imageVector = if (timerState.soundEnabled) Icons.Default.VolumeUp else Icons.Default.VolumeOff,
-                        contentDescription = "Suara Bell",
+                        contentDescription = androidx.compose.ui.res.stringResource(com.example.R.string.bell_sound_notification_desc),
                         tint = if (timerState.soundEnabled) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.outline
                     )
                 }
@@ -184,7 +190,7 @@ fun BrewTimerScreen(
                     contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 8.dp, vertical = 4.dp),
                     modifier = Modifier.height(32.dp).testTag("test_vibration_button")
                 ) {
-                    Text("Uji Getar", style = MaterialTheme.typography.labelSmall)
+                    Text(androidx.compose.ui.res.stringResource(com.example.R.string.btn_test_vibration), style = MaterialTheme.typography.labelSmall)
                 }
             }
         }
@@ -215,7 +221,7 @@ fun BrewTimerScreen(
             ) {
                 // Stage countdown label
                 Text(
-                    text = "SISA WAKTU TAHAP INI",
+                    text = androidx.compose.ui.res.stringResource(com.example.R.string.remaining_stage_time_label),
                     style = MaterialTheme.typography.labelMedium,
                     letterSpacing = 1.5.sp,
                     color = stageThemeColor,
@@ -251,7 +257,7 @@ fun BrewTimerScreen(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = "Total Waktu: ",
+                            text = androidx.compose.ui.res.stringResource(com.example.R.string.total_elapsed_label),
                             style = MaterialTheme.typography.labelSmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -298,7 +304,11 @@ fun BrewTimerScreen(
                             color = stageThemeColor.copy(alpha = 0.15f)
                         ) {
                             Text(
-                                text = "TAHAP ${timerState.currentStageIndex + 1} DARI ${recipe.stages.size}",
+                                text = androidx.compose.ui.res.stringResource(
+                                    com.example.R.string.stage_x_of_y,
+                                    timerState.currentStageIndex + 1,
+                                    recipe.stages.size
+                                ),
                                 style = MaterialTheme.typography.labelSmall,
                                 fontWeight = FontWeight.Bold,
                                 color = stageThemeColor,
@@ -307,7 +317,13 @@ fun BrewTimerScreen(
                         }
 
                         Text(
-                            text = if (timerState.isBrewing && !timerState.isPaused) "● Sedang Berjalan" else if (timerState.isPaused) "⏸ Jeda" else "Siap Mulai",
+                            text = if (timerState.isBrewing && !timerState.isPaused) {
+                                androidx.compose.ui.res.stringResource(com.example.R.string.status_in_progress)
+                            } else if (timerState.isPaused) {
+                                androidx.compose.ui.res.stringResource(com.example.R.string.status_paused)
+                            } else {
+                                androidx.compose.ui.res.stringResource(com.example.R.string.status_ready)
+                            },
                             style = MaterialTheme.typography.labelSmall,
                             fontWeight = FontWeight.SemiBold,
                             color = if (timerState.isBrewing && !timerState.isPaused) Color(0xFF2E7D32) else MaterialTheme.colorScheme.onSurfaceVariant
@@ -337,7 +353,7 @@ fun BrewTimerScreen(
                         ) {
                             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                                 Text(
-                                    text = "Tuang Air",
+                                    text = androidx.compose.ui.res.stringResource(com.example.R.string.pour_water_heading),
                                     style = MaterialTheme.typography.labelSmall,
                                     color = MaterialTheme.colorScheme.onPrimaryContainer
                                 )
@@ -358,13 +374,13 @@ fun BrewTimerScreen(
 
                             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                                 Text(
-                                    text = "TARGET TIMBANGAN",
+                                    text = androidx.compose.ui.res.stringResource(com.example.R.string.target_scale_heading),
                                     style = MaterialTheme.typography.labelSmall,
                                     fontWeight = FontWeight.Bold,
                                     color = MaterialTheme.colorScheme.primary
                                 )
                                 Text(
-                                    text = "${currentStage.accumulatedWaterGrams} gram",
+                                    text = androidx.compose.ui.res.stringResource(com.example.R.string.grams_unit, currentStage.accumulatedWaterGrams),
                                     style = MaterialTheme.typography.headlineMedium,
                                     fontWeight = FontWeight.ExtraBold,
                                     color = MaterialTheme.colorScheme.primary
@@ -407,13 +423,13 @@ fun BrewTimerScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "Tahap Berikutnya: ${nextStage.name}",
+                        text = androidx.compose.ui.res.stringResource(com.example.R.string.next_stage_label, nextStage.name),
                         style = MaterialTheme.typography.bodySmall,
                         fontWeight = FontWeight.SemiBold,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     Text(
-                        text = "Target: ${nextStage.accumulatedWaterGrams}g",
+                        text = androidx.compose.ui.res.stringResource(com.example.R.string.next_target_label, nextStage.accumulatedWaterGrams),
                         style = MaterialTheme.typography.labelSmall,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.primary
@@ -440,7 +456,10 @@ fun BrewTimerScreen(
                 enabled = timerState.currentStageIndex > 0,
                 modifier = Modifier.size(52.dp).testTag("prev_stage_button")
             ) {
-                Icon(Icons.Default.FastRewind, contentDescription = "Tahap Sebelumnya")
+                Icon(
+                    Icons.Default.FastRewind,
+                    contentDescription = androidx.compose.ui.res.stringResource(com.example.R.string.prev_stage_desc)
+                )
             }
 
             // Central Play / Pause / Resume Button
@@ -473,9 +492,9 @@ fun BrewTimerScreen(
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     text = when {
-                        !timerState.isBrewing -> "Mulai Seduh"
-                        timerState.isPaused -> "Lanjutkan"
-                        else -> "Jeda (Pause)"
+                        !timerState.isBrewing -> androidx.compose.ui.res.stringResource(com.example.R.string.btn_start_brew)
+                        timerState.isPaused -> androidx.compose.ui.res.stringResource(com.example.R.string.btn_resume_brew)
+                        else -> androidx.compose.ui.res.stringResource(com.example.R.string.btn_pause_brew)
                     },
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold
@@ -492,7 +511,10 @@ fun BrewTimerScreen(
                 enabled = timerState.currentStageIndex < recipe.stages.size - 1,
                 modifier = Modifier.size(52.dp).testTag("next_stage_button")
             ) {
-                Icon(Icons.Default.FastForward, contentDescription = "Tahap Selanjutnya")
+                Icon(
+                    Icons.Default.FastForward,
+                    contentDescription = androidx.compose.ui.res.stringResource(com.example.R.string.next_stage_desc)
+                )
             }
         }
 
@@ -508,7 +530,7 @@ fun BrewTimerScreen(
             ) {
                 Icon(Icons.Default.Refresh, contentDescription = null, modifier = Modifier.size(18.dp))
                 Spacer(modifier = Modifier.width(6.dp))
-                Text("Reset Timer")
+                Text(androidx.compose.ui.res.stringResource(com.example.R.string.btn_reset_timer))
             }
 
             OutlinedButton(
@@ -516,7 +538,7 @@ fun BrewTimerScreen(
                 modifier = Modifier.weight(1f).testTag("back_to_setup_button"),
                 shape = RoundedCornerShape(12.dp)
             ) {
-                Text("Ubah Resep")
+                Text(androidx.compose.ui.res.stringResource(com.example.R.string.btn_change_recipe))
             }
         }
 
@@ -529,7 +551,8 @@ fun BrewTimerScreen(
             recipe = recipe,
             actualDurationSeconds = timerState.totalElapsedSeconds,
             onDismiss = onDismissSummary,
-            onSaveHistory = onSaveHistory
+            onSaveHistory = onSaveHistory,
+            savedBeanNames = savedBeanNames
         )
     }
 }

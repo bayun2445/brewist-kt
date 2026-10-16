@@ -1,15 +1,23 @@
 package com.example.data
 
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-@Entity(tableName = "brew_history")
+@Entity(
+    tableName = "brew_history",
+    indices = [
+        Index(value = ["beanId"]),
+        Index(value = ["timestamp"])
+    ]
+)
 data class BrewHistoryEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
+    val beanId: Long = 0,
     val beanName: String,
     val recipeName: String,
     val doseGrams: Float,
